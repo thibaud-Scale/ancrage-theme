@@ -3,9 +3,8 @@
     "main-cart": {
       "type": "main-cart",
       "settings": {
-        "show_vendor": false,
         "show_note": true,
-        "enable_free_shipping_bar": true,
+        "show_shipping_bar": true,
         "free_shipping_threshold": 49
       }
     }

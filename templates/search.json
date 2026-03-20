@@ -3,11 +3,6 @@
     "main-search": {
       "type": "main-search",
       "settings": {
-        "columns": 4,
-        "show_vendor": false,
-        "show_price": true,
-        "show_articles": true,
-        "show_pages": true,
         "products_per_page": 16
       }
     }

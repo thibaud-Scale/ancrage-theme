@@ -5,11 +5,8 @@
       "settings": {
         "show_author": true,
         "show_date": true,
-        "show_tags": true,
         "show_share": true,
-        "show_comments": true,
-        "show_navigation": true,
-        "image_ratio": "landscape"
+        "show_comments": true
       }
     }
   },

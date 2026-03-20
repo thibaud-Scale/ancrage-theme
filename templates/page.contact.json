@@ -3,12 +3,7 @@
     "contact-info": {
       "type": "contact-info",
       "settings": {
-        "heading": "Contactez-nous",
-        "subheading": "Une question ? N'hésitez pas à nous contacter. Notre équipe vous répondra dans les plus brefs délais.",
-        "show_phone": true,
-        "show_email": true,
-        "show_address": true,
-        "show_hours": true
+        "heading": "Contactez-nous"
       },
       "blocks": {
         "phone": {
@@ -49,9 +44,7 @@
     "main-page": {
       "type": "main-page",
       "settings": {
-        "show_title": false,
-        "padding_top": 40,
-        "padding_bottom": 60
+        "show_title": false
       }
     }
   },

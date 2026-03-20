@@ -5,8 +5,7 @@
       "settings": {
         "heading": "Page introuvable",
         "text": "La page que vous recherchez n'existe pas ou a été déplacée.",
-        "button_label": "Retour à l'accueil",
-        "button_link": "/"
+        "show_search": true
       }
     }
   },

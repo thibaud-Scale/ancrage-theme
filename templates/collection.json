@@ -4,14 +4,10 @@
       "type": "main-collection",
       "settings": {
         "products_per_page": 16,
-        "columns": 4,
-        "show_vendor": false,
-        "show_price": true,
-        "enable_sorting": true,
-        "enable_filtering": true,
-        "filter_type": "sidebar",
-        "show_collection_description": true,
-        "show_collection_image": true
+        "default_columns": 4,
+        "show_banner": true,
+        "show_filters": true,
+        "show_sort": true
       }
     }
   },

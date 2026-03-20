@@ -4,12 +4,9 @@
       "type": "main-product",
       "settings": {
         "show_vendor": true,
-        "show_sku": true,
         "show_share": true,
-        "enable_sticky_info": true,
-        "media_size": "large",
-        "media_position": "left",
-        "gallery_layout": "thumbnail"
+        "show_buy_now": true,
+        "enable_zoom": true
       },
       "blocks": {
         "vendor": {
@@ -64,8 +61,7 @@
       "type": "product-recommendations",
       "settings": {
         "heading": "Vous aimerez aussi",
-        "products_to_show": 4,
-        "columns": 4
+        "products_count": 4
       }
     }
   },
