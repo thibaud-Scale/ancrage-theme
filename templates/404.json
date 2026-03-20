@@ -17,46 +17,9 @@
         "show_search": true,
         "collection": ""
       }
-    },
-    "countdown_mJ3Kkx": {
-      "type": "countdown",
-      "name": "Compte à rebours",
-      "settings": {
-        "heading": "Offre spéciale",
-        "text": "Profitez de -20% sur toute la boutique ! Offre limitée.",
-        "target_date": "2026-12-31 23:59",
-        "button_text": "En profiter maintenant",
-        "button_link": "",
-        "bg_color": "#1a1a2e",
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "hero_banner_EN4diA": {
-      "type": "hero-banner",
-      "name": "Bannière hero",
-      "settings": {
-        "video_url": "",
-        "overlay_opacity": 40,
-        "label": "Artisan depuis 2010",
-        "heading": "Un savoir-faire d'exception",
-        "subheading": "Découvrez nos créations artisanales, fabriquées avec passion dans notre atelier français.",
-        "button1_text": "Découvrir",
-        "button1_link": "",
-        "button2_text": "Notre histoire",
-        "button2_link": "",
-        "min_height": 80,
-        "text_alignment": "center",
-        "color_scheme": "dark",
-        "show_scroll_indicator": true,
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
     }
   },
   "order": [
-    "main-404",
-    "countdown_mJ3Kkx",
-    "hero_banner_EN4diA"
+    "main-404"
   ]
 }
