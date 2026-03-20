@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+  {%- comment -%} ========== META & SEO ========== {%- endcomment -%}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>
+    {%- if page_title -%}
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    {%- else -%}
+      {{ shop.name }}
+    {%- endif -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.enable_noindex -%}
+    <meta name="robots" content="noindex, nofollow">
+  {%- endif -%}
+
+  {%- comment -%} ========== OPEN GRAPH ========== {%- endcomment -%}
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:title" content="{{ page_title | default: shop.name | escape }}">
+  <meta property="og:description" content="{{ page_description | default: shop.description | escape }}">
+  <meta property="og:type" content="{% if template.name == 'product' %}product{% else %}website{% endif %}">
+
+  {%- if page_image -%}
+    <meta property="og:image" content="https:{{ page_image | image_url: width: 1200 }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+  {%- elsif settings.og_image_default -%}
+    <meta property="og:image" content="https:{{ settings.og_image_default | image_url: width: 1200 }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+  {%- endif -%}
+
+  {%- comment -%} ========== TWITTER CARD ========== {%- endcomment -%}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title | default: shop.name | escape }}">
+  <meta name="twitter:description" content="{{ page_description | default: shop.description | escape }}">
+  {%- if page_image -%}
+    <meta name="twitter:image" content="https:{{ page_image | image_url: width: 1200 }}">
+  {%- elsif settings.og_image_default -%}
+    <meta name="twitter:image" content="https:{{ settings.og_image_default | image_url: width: 1200 }}">
+  {%- endif -%}
+
+  {%- comment -%} ========== JSON-LD : LOCAL BUSINESS ========== {%- endcomment -%}
+  {%- if settings.enable_local_business_schema -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": {{ settings.business_name | default: shop.name | json }},
+        "description": {{ shop.description | json }},
+        "url": {{ shop.url | json }},
+        {%- if settings.business_logo -%}
+          "logo": {{ settings.business_logo | image_url: width: 600 | prepend: 'https:' | json }},
+        {%- endif -%}
+        "telephone": {{ settings.business_phone | json }},
+        "email": {{ settings.business_email | default: shop.email | json }},
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": {{ settings.business_street | json }},
+          "addressLocality": {{ settings.business_city | json }},
+          "postalCode": {{ settings.business_zip | json }},
+          "addressRegion": {{ settings.business_region | json }},
+          "addressCountry": "FR"
+        }
+        {%- if settings.business_lat != blank and settings.business_lng != blank -%}
+          ,"geo": {
+            "@type": "GeoCoordinates",
+            "latitude": {{ settings.business_lat | json }},
+            "longitude": {{ settings.business_lng | json }}
+          }
+        {%- endif -%}
+        {%- if settings.business_opening_hours != blank -%}
+          ,"openingHours": {{ settings.business_opening_hours | json }}
+        {%- endif -%}
+        {%- if settings.business_price_range != blank -%}
+          ,"priceRange": {{ settings.business_price_range | json }}
+        {%- endif -%}
+      }
+    </script>
+  {%- endif -%}
+
+  {%- comment -%} ========== PRECONNECT & PRELOAD ========== {%- endcomment -%}
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  {%- comment -%} ========== GOOGLE FONTS ========== {%- endcomment -%}
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap">
+  </noscript>
+
+  {%- comment -%} ========== FAVICON ========== {%- endcomment -%}
+  {%- if settings.favicon -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+  {%- endif -%}
+
+  {%- comment -%} ========== SHOPIFY HEAD CONTENT ========== {%- endcomment -%}
+  {{ content_for_header }}
+
+  {%- comment -%} ========== THEME CSS ========== {%- endcomment -%}
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  {%- comment -%} ========== CSS CUSTOM PROPERTIES ========== {%- endcomment -%}
+  <style>
+    :root {
+      /* ---- Couleurs principales ---- */
+      --color-primary: {{ settings.color_primary | default: '#8B6F4E' }};
+      --color-primary-light: {{ settings.color_primary_light | default: '#A8906F' }};
+      --color-primary-dark: {{ settings.color_primary_dark | default: '#6B5438' }};
+
+      --color-secondary: {{ settings.color_secondary | default: '#2C3E50' }};
+      --color-secondary-light: {{ settings.color_secondary_light | default: '#3D566E' }};
+
+      --color-accent: {{ settings.color_accent | default: '#C49A6C' }};
+
+      /* ---- Couleurs neutres ---- */
+      --color-background: {{ settings.color_background | default: '#FDFAF6' }};
+      --color-background-alt: {{ settings.color_background_alt | default: '#F5F0EA' }};
+      --color-surface: {{ settings.color_surface | default: '#FFFFFF' }};
+
+      --color-text: {{ settings.color_text | default: '#2C2C2C' }};
+      --color-text-light: {{ settings.color_text_light | default: '#6B6B6B' }};
+      --color-text-inverse: {{ settings.color_text_inverse | default: '#FFFFFF' }};
+
+      --color-border: {{ settings.color_border | default: '#E0D6CC' }};
+      --color-border-light: {{ settings.color_border_light | default: '#F0EBE4' }};
+
+      /* ---- Couleurs fonctionnelles ---- */
+      --color-success: {{ settings.color_success | default: '#4A7C59' }};
+      --color-error: {{ settings.color_error | default: '#C0392B' }};
+      --color-warning: {{ settings.color_warning | default: '#D4A03C' }};
+      --color-info: {{ settings.color_info | default: '#2980B9' }};
+
+      /* ---- Typographie ---- */
+      --font-heading: {{ settings.font_heading | default: "'DM Serif Display', Georgia, serif" }};
+      --font-body: {{ settings.font_body | default: "'DM Sans', system-ui, -apple-system, sans-serif" }};
+
+      --font-size-xs: {{ settings.font_size_xs | default: '0.75rem' }};
+      --font-size-sm: {{ settings.font_size_sm | default: '0.875rem' }};
+      --font-size-base: {{ settings.font_size_base | default: '1rem' }};
+      --font-size-md: {{ settings.font_size_md | default: '1.125rem' }};
+      --font-size-lg: {{ settings.font_size_lg | default: '1.25rem' }};
+      --font-size-xl: {{ settings.font_size_xl | default: '1.5rem' }};
+      --font-size-2xl: {{ settings.font_size_2xl | default: '2rem' }};
+      --font-size-3xl: {{ settings.font_size_3xl | default: '2.5rem' }};
+      --font-size-4xl: {{ settings.font_size_4xl | default: '3.25rem' }};
+
+      --font-weight-normal: {{ settings.font_weight_normal | default: '400' }};
+      --font-weight-medium: {{ settings.font_weight_medium | default: '500' }};
+      --font-weight-semibold: {{ settings.font_weight_semibold | default: '600' }};
+      --font-weight-bold: {{ settings.font_weight_bold | default: '700' }};
+
+      --line-height-tight: {{ settings.line_height_tight | default: '1.2' }};
+      --line-height-base: {{ settings.line_height_base | default: '1.6' }};
+      --line-height-loose: {{ settings.line_height_loose | default: '1.8' }};
+
+      --letter-spacing-tight: {{ settings.letter_spacing_tight | default: '-0.02em' }};
+      --letter-spacing-normal: {{ settings.letter_spacing_normal | default: '0' }};
+      --letter-spacing-wide: {{ settings.letter_spacing_wide | default: '0.05em' }};
+      --letter-spacing-wider: {{ settings.letter_spacing_wider | default: '0.1em' }};
+
+      /* ---- Layout ---- */
+      --page-max-width: {{ settings.page_max_width | default: '1320px' }};
+      --content-max-width: {{ settings.content_max_width | default: '800px' }};
+      --grid-gap: {{ settings.grid_gap | default: '1.5rem' }};
+
+      --spacing-xs: {{ settings.spacing_xs | default: '0.25rem' }};
+      --spacing-sm: {{ settings.spacing_sm | default: '0.5rem' }};
+      --spacing-md: {{ settings.spacing_md | default: '1rem' }};
+      --spacing-lg: {{ settings.spacing_lg | default: '1.5rem' }};
+      --spacing-xl: {{ settings.spacing_xl | default: '2rem' }};
+      --spacing-2xl: {{ settings.spacing_2xl | default: '3rem' }};
+      --spacing-3xl: {{ settings.spacing_3xl | default: '4rem' }};
+      --spacing-4xl: {{ settings.spacing_4xl | default: '6rem' }};
+
+      --section-spacing-vertical: {{ settings.section_spacing_vertical | default: '4rem' }};
+      --page-gutter: {{ settings.page_gutter | default: '1.25rem' }};
+
+      /* ---- Bordures ---- */
+      --border-radius-sm: {{ settings.border_radius_sm | default: '4px' }};
+      --border-radius-md: {{ settings.border_radius_md | default: '8px' }};
+      --border-radius-lg: {{ settings.border_radius_lg | default: '12px' }};
+      --border-radius-xl: {{ settings.border_radius_xl | default: '16px' }};
+      --border-radius-full: {{ settings.border_radius_full | default: '9999px' }};
+
+      /* ---- Ombres ---- */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+      /* ---- Transitions ---- */
+      --transition-fast: 150ms ease;
+      --transition-base: 250ms ease;
+      --transition-slow: 400ms ease;
+    }
+
+    /* ---- Reset de base ---- */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 100%;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-normal);
+      line-height: var(--line-height-base);
+      color: var(--color-text);
+      background-color: var(--color-background);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ---- Skip to content ---- */
+    .skip-to-content {
+      position: absolute;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10000;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      background-color: var(--color-primary);
+      color: var(--color-text-inverse);
+      font-family: var(--font-body);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      text-decoration: none;
+      border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+      transition: top var(--transition-fast);
+    }
+
+    .skip-to-content:focus {
+      top: 0;
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+
+    /* ---- Back to top ---- */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background-color: var(--color-primary);
+      color: var(--color-text-inverse);
+      border: none;
+      border-radius: var(--border-radius-full);
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      transition: opacity var(--transition-base), transform var(--transition-base);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .back-to-top.is-visible {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .back-to-top svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ---- JS detection ---- */
+    .no-js .js-only { display: none !important; }
+  </style>
+
+  <script>
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+  </script>
+</head>
+
+<body class="template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}-{{ template.suffix }}{% endif %}">
+  {%- comment -%} ========== SKIP TO CONTENT (A11Y) ========== {%- endcomment -%}
+  <a class="skip-to-content" href="#main-content">
+    Aller au contenu principal
+  </a>
+
+  {%- comment -%} ========== HEADER GROUP ========== {%- endcomment -%}
+  {% sections 'header-group' %}
+
+  {%- comment -%} ========== ANNOUNCEMENT BAR ========== {%- endcomment -%}
+  {% section 'announcement-bar' %}
+
+  {%- comment -%} ========== MAIN CONTENT ========== {%- endcomment -%}
+  <main id="main-content" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {%- comment -%} ========== FOOTER GROUP ========== {%- endcomment -%}
+  {% sections 'footer-group' %}
+
+  {%- comment -%} ========== CART DRAWER ========== {%- endcomment -%}
+  {% render 'cart-drawer' %}
+
+  {%- comment -%} ========== RGPD / COOKIE BANNER ========== {%- endcomment -%}
+  {% render 'cookie-banner' %}
+
+  {%- comment -%} ========== BACK TO TOP ========== {%- endcomment -%}
+  <button
+    class="back-to-top js-only"
+    aria-label="Retour en haut de la page"
+    title="Retour en haut"
+    type="button"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  {%- comment -%} ========== THEME JS ========== {%- endcomment -%}
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+  {%- comment -%} ========== BACK TO TOP LOGIC ========== {%- endcomment -%}
+  <script>
+    (function() {
+      var btn = document.querySelector('.back-to-top');
+      if (!btn) return;
+
+      function toggleButton() {
+        if (window.scrollY > 400) {
+          btn.classList.add('is-visible');
+        } else {
+          btn.classList.remove('is-visible');
+        }
+      }
+
+      window.addEventListener('scroll', toggleButton, { passive: true });
+
+      btn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+</html>

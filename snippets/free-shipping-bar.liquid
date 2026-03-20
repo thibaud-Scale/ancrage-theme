@@ -1,0 +1,96 @@
+{% comment %}
+  Snippet: free-shipping-bar.liquid
+  Theme: Ancrage
+  Usage: {% render 'free-shipping-bar', current_total: cart.total_price %}
+  Accepts:
+    - current_total {Number} Current cart total in cents
+{% endcomment %}
+
+{%- liquid
+  assign threshold = settings.free_shipping_threshold | default: 50
+  assign threshold_cents = threshold | times: 100
+  assign total = current_total | default: 0
+  assign remaining_cents = threshold_cents | minus: total
+  assign remaining_euros = remaining_cents | divided_by: 100.0
+  assign progress = total | times: 100 | divided_by: threshold_cents
+  if progress > 100
+    assign progress = 100
+  endif
+  assign is_free = false
+  if total >= threshold_cents
+    assign is_free = true
+  endif
+-%}
+
+<div class="free-shipping-bar" role="status" aria-live="polite" data-free-shipping-bar>
+  <div class="free-shipping-bar__message">
+    {%- if is_free -%}
+      <span class="free-shipping-bar__text free-shipping-bar__text--complete">
+        {% render 'icon', name: 'check' %}
+        Livraison gratuite !
+      </span>
+    {%- else -%}
+      <span class="free-shipping-bar__text">
+        Plus que <strong>{{ remaining_euros | money_without_trailing_zeros }}</strong> pour la livraison gratuite !
+      </span>
+    {%- endif -%}
+  </div>
+
+  <div class="free-shipping-bar__track" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progression vers la livraison gratuite">
+    <div class="free-shipping-bar__fill{% if is_free %} free-shipping-bar__fill--complete{% endif %}" style="--progress: {{ progress }}%;"></div>
+  </div>
+</div>
+
+<style>
+  .free-shipping-bar {
+    text-align: center;
+  }
+
+  .free-shipping-bar__message {
+    margin-bottom: 8px;
+  }
+
+  .free-shipping-bar__text {
+    font-size: 0.8125rem;
+    color: #444;
+  }
+
+  .free-shipping-bar__text strong {
+    color: #C4853A;
+    font-weight: 700;
+  }
+
+  .free-shipping-bar__text--complete {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 0.8125rem;
+  }
+
+  .free-shipping-bar__text--complete svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .free-shipping-bar__track {
+    width: 100%;
+    height: 6px;
+    background-color: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .free-shipping-bar__fill {
+    height: 100%;
+    width: var(--progress, 0%);
+    background-color: #C4853A;
+    border-radius: 3px;
+    transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .free-shipping-bar__fill--complete {
+    background-color: #2e7d32;
+  }
+</style>

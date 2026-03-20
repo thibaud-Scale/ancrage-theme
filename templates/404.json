@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main-404": {
+      "type": "main-404",
+      "settings": {
+        "heading": "Page introuvable",
+        "text": "La page que vous recherchez n'existe pas ou a été déplacée.",
+        "button_label": "Retour à l'accueil",
+        "button_link": "/"
+      }
+    }
+  },
+  "order": ["main-404"]
+}

@@ -1,0 +1,161 @@
+{{ 'section-faq.css' | asset_url | stylesheet_tag }}
+
+<section
+  id="faq-{{ section.id }}"
+  class="faq section-spacing"
+  style="--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+  data-section-id="{{ section.id }}"
+  data-section-type="faq"
+>
+  <div class="container">
+    {%- if section.settings.heading != blank or section.settings.subtitle != blank -%}
+      <div class="section-header" data-aos="fade-up">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="section-header__heading h2">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="section-header__subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="faq__list" data-aos="fade-up" data-aos-delay="100">
+      {%- for block in section.blocks -%}
+        <details
+          class="faq__item accordion"
+          {{ block.shopify_attributes }}
+        >
+          <summary class="faq__question accordion__trigger" aria-expanded="false">
+            <h3 class="faq__question-text">{{ block.settings.question }}</h3>
+            <span class="faq__icon accordion__icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </summary>
+          <div class="faq__answer accordion__content rte">
+            {{ block.settings.answer }}
+          </div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {%- for block in section.blocks -%}
+            {
+              "@type": "Question",
+              "name": {{ block.settings.question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ block.settings.answer | strip_html | json }}
+              }
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Questions fréquentes"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Trouvez rapidement les réponses à vos questions"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Espacement supérieur"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Espacement inférieur"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Quelle est votre question ?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Réponse",
+          "default": "<p>Voici la réponse à cette question.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "Quels sont les délais de livraison ?",
+            "answer": "<p>Nous expédions vos commandes sous 24 à 48 heures ouvrées. La livraison est généralement effectuée en 2 à 5 jours selon votre localisation. Vous recevrez un e-mail de confirmation avec un numéro de suivi dès l'envoi de votre colis.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Puis-je retourner un article ?",
+            "answer": "<p>Bien sûr ! Vous disposez de 30 jours après réception pour retourner un article qui ne vous conviendrait pas. Le produit doit être dans son état d'origine. Contactez notre service client pour obtenir une étiquette de retour gratuite.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Vos produits sont-ils fabriqués en France ?",
+            "answer": "<p>Oui, l'ensemble de nos produits sont conçus et fabriqués dans notre atelier en France. Nous travaillons exclusivement avec des matériaux de qualité, sélectionnés auprès de fournisseurs locaux lorsque cela est possible.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Comment puis-je vous contacter ?",
+            "answer": "<p>Vous pouvez nous joindre par e-mail, par téléphone du lundi au samedi de 9h à 18h, ou via le formulaire de contact disponible sur notre site. Nous nous engageons à répondre à toutes vos demandes sous 24 heures.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,251 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Passer au contenu",
+      "close": "Fermer",
+      "menu": "Menu",
+      "loading": "Chargement..."
+    },
+    "meta": {
+      "tags": "Mots-clés: {{ tags }}",
+      "page": "Page {{ page }}"
+    },
+    "breadcrumbs": {
+      "home": "Accueil"
+    },
+    "search": {
+      "title": "Rechercher",
+      "placeholder": "Rechercher...",
+      "no_results": "Aucun résultat pour « {{ terms }} »",
+      "results_count": "{{ count }} résultats"
+    },
+    "newsletter": {
+      "label": "E-mail",
+      "success": "Merci pour votre inscription !",
+      "button_label": "S'inscrire"
+    },
+    "share": {
+      "copy_to_clipboard": "Copier le lien",
+      "share": "Partager",
+      "success": "Lien copié !"
+    },
+    "cart": {
+      "title": "Panier",
+      "empty": "Votre panier est vide",
+      "continue_shopping": "Continuer vos achats",
+      "subtotal": "Sous-total",
+      "checkout": "Passer la commande",
+      "note": "Note de commande",
+      "update": "Mettre à jour",
+      "remove": "Supprimer",
+      "quantity": "Quantité",
+      "shipping_note": "Frais de livraison calculés à la commande",
+      "free_shipping": "Livraison gratuite !",
+      "free_shipping_remaining": "Plus que {{ remaining }} pour la livraison gratuite !"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Ajouter au panier",
+      "buy_now": "Acheter maintenant",
+      "sold_out": "Rupture de stock",
+      "unavailable": "Indisponible",
+      "price": {
+        "from": "À partir de",
+        "sale": "Promo",
+        "regular": "Prix habituel",
+        "sale_price": "Prix soldé",
+        "unit_price": "Prix unitaire"
+      },
+      "quantity": {
+        "label": "Quantité",
+        "increase": "Augmenter",
+        "decrease": "Diminuer"
+      },
+      "vendor": "Fournisseur",
+      "type": "Type",
+      "sku": "SKU",
+      "description": "Description",
+      "shipping": "Livraison & retours",
+      "details": "Détails",
+      "share": "Partager ce produit",
+      "recommendations": "Vous aimerez aussi"
+    }
+  },
+  "collections": {
+    "general": {
+      "title": "Collections",
+      "all": "Tous les produits",
+      "no_products": "Aucun produit dans cette collection",
+      "items_count": "{{ count }} produits"
+    },
+    "sorting": {
+      "title": "Trier par",
+      "featured": "En vedette",
+      "best_selling": "Meilleures ventes",
+      "title_ascending": "A-Z",
+      "title_descending": "Z-A",
+      "price_ascending": "Prix croissant",
+      "price_descending": "Prix décroissant",
+      "created_ascending": "Plus ancien",
+      "created_descending": "Plus récent"
+    },
+    "filtering": {
+      "title": "Filtrer",
+      "clear": "Effacer",
+      "clear_all": "Tout effacer",
+      "apply": "Appliquer",
+      "price": "Prix",
+      "availability": "Disponibilité",
+      "in_stock": "En stock",
+      "out_of_stock": "Rupture de stock",
+      "product_type": "Type de produit",
+      "vendor": "Marque"
+    },
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {{ number }}"
+    }
+  },
+  "blogs": {
+    "article": {
+      "read_more": "Lire la suite",
+      "read_time": "{{ minutes }} min de lecture",
+      "author": "Par {{ author }}",
+      "date": "Publié le {{ date }}",
+      "tags": "Catégories",
+      "comments": "Commentaires",
+      "comment_form": {
+        "name": "Nom",
+        "email": "E-mail",
+        "message": "Message",
+        "submit": "Publier",
+        "success": "Commentaire publié avec succès !",
+        "moderated": "Votre commentaire est en attente de modération."
+      },
+      "share": "Partager cet article",
+      "previous": "Article précédent",
+      "next": "Article suivant"
+    }
+  },
+  "customers": {
+    "login": {
+      "title": "Connexion",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "forgot_password": "Mot de passe oublié ?",
+      "create_account": "Créer un compte",
+      "guest_title": "Continuer en tant qu'invité"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "submit": "Créer",
+      "login_link": "Déjà un compte ? Connectez-vous"
+    },
+    "account": {
+      "title": "Mon compte",
+      "welcome": "Bienvenue, {{ name }}",
+      "orders": "Historique de commandes",
+      "details": "Informations du compte",
+      "addresses": "Adresses",
+      "logout": "Déconnexion",
+      "no_orders": "Aucune commande pour le moment."
+    },
+    "orders": {
+      "title": "Commande {{ name }}",
+      "date": "Date",
+      "status": "Statut",
+      "total": "Total",
+      "order_number": "Numéro de commande",
+      "items": "Articles"
+    },
+    "addresses": {
+      "title": "Mes adresses",
+      "add": "Ajouter une adresse",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "default": "Adresse par défaut"
+    },
+    "reset_password": {
+      "title": "Réinitialiser le mot de passe",
+      "email": "E-mail",
+      "submit": "Envoyer",
+      "success": "Un e-mail de réinitialisation vous a été envoyé."
+    },
+    "activate_account": {
+      "title": "Activer votre compte",
+      "password": "Mot de passe",
+      "confirm": "Confirmer le mot de passe",
+      "submit": "Activer"
+    }
+  },
+  "sections": {
+    "header": {
+      "menu": "Menu",
+      "cart": "Panier",
+      "search": "Rechercher",
+      "account": "Compte",
+      "close": "Fermer"
+    },
+    "footer": {
+      "newsletter_heading": "Inscrivez-vous à notre newsletter",
+      "newsletter_text": "Recevez nos dernières nouveautés et offres exclusives.",
+      "copyright": "© {{ year }} {{ shop_name }}. Tous droits réservés.",
+      "payment_methods": "Moyens de paiement"
+    },
+    "announcement": {
+      "close": "Fermer l'annonce"
+    },
+    "hero": {
+      "scroll_down": "Défiler vers le bas"
+    },
+    "trust_bar": {
+      "shipping": "Livraison rapide",
+      "secure": "Paiement sécurisé",
+      "guarantee": "Satisfait ou remboursé",
+      "support": "Service client réactif"
+    },
+    "faq": {
+      "title": "Questions fréquentes"
+    },
+    "testimonials": {
+      "title": "Ce que disent nos clients"
+    },
+    "cookie_banner": {
+      "text": "Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre utilisation des cookies.",
+      "accept": "Accepter",
+      "decline": "Refuser",
+      "privacy_link": "Politique de confidentialité"
+    }
+  },
+  "templates": {
+    "404": {
+      "title": "Page introuvable",
+      "text": "La page que vous recherchez n'existe pas ou a été déplacée.",
+      "button": "Retour à l'accueil"
+    },
+    "search": {
+      "title": "Résultats de recherche",
+      "no_results": "Aucun résultat pour « {{ terms }} »",
+      "products": "Produits",
+      "pages": "Pages",
+      "articles": "Articles"
+    },
+    "cart": {
+      "title": "Votre panier"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Passer au contenu principal",
+    "close": "Fermer",
+    "menu": "Menu de navigation",
+    "loading": "Chargement...",
+    "back_to_top": "Retour en haut"
+  }
+}

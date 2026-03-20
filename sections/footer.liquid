@@ -1,0 +1,789 @@
+{%- liquid
+  assign tagline = section.settings.tagline
+  assign newsletter_heading = section.settings.newsletter_heading
+  assign newsletter_text = section.settings.newsletter_text
+  assign show_payment_icons = section.settings.show_payment_icons
+-%}
+
+{/* Reassurance strip */}
+{%- if section.settings.show_reassurance -%}
+  <div class="reassurance-strip" aria-label="Nos engagements">
+    <div class="reassurance-strip__container">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'reassurance' -%}
+          <div class="reassurance-strip__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              <div class="reassurance-strip__icon">
+                {% render 'icon', name: block.settings.icon %}
+              </div>
+            {%- endif -%}
+            <div class="reassurance-strip__content">
+              <p class="reassurance-strip__title">{{ block.settings.title }}</p>
+              {%- if block.settings.text != blank -%}
+                <p class="reassurance-strip__text">{{ block.settings.text }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+<footer class="footer" role="contentinfo" aria-label="Pied de page" data-section-id="{{ section.id }}">
+  <div class="footer__container">
+    <div class="footer__grid">
+      {/* Column 1: Brand */}
+      <div class="footer__column footer__column--brand">
+        <a href="{{ routes.root_url }}" class="footer__logo-link" aria-label="{{ shop.name }} - Accueil">
+          {%- if section.settings.logo != blank -%}
+            <img
+              src="{{ section.settings.logo | image_url: width: 160 }}"
+              alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
+              width="160"
+              height="{{ 160 | divided_by: section.settings.logo.aspect_ratio }}"
+              loading="lazy"
+              class="footer__logo-image"
+            >
+          {%- else -%}
+            <span class="footer__logo-text h3">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+
+        {%- if tagline != blank -%}
+          <p class="footer__tagline">{{ tagline }}</p>
+        {%- endif -%}
+
+        {/* Social icons */}
+        <div class="footer__social" aria-label="Réseaux sociaux">
+          {%- if section.settings.social_facebook != blank -%}
+            <a href="{{ section.settings.social_facebook }}" class="footer__social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+              {% render 'icon', name: 'facebook' %}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_instagram != blank -%}
+            <a href="{{ section.settings.social_instagram }}" class="footer__social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+              {% render 'icon', name: 'instagram' %}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_pinterest != blank -%}
+            <a href="{{ section.settings.social_pinterest }}" class="footer__social-link" aria-label="Pinterest" target="_blank" rel="noopener noreferrer">
+              {% render 'icon', name: 'pinterest' %}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_tiktok != blank -%}
+            <a href="{{ section.settings.social_tiktok }}" class="footer__social-link" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+              {% render 'icon', name: 'tiktok' %}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_linkedin != blank -%}
+            <a href="{{ section.settings.social_linkedin }}" class="footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+              {% render 'icon', name: 'linkedin' %}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {/* Dynamic columns from blocks */}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'menu' -%}
+            <div class="footer__column footer__column--nav" {{ block.shopify_attributes }}>
+              <h3 class="footer__heading h5">{{ block.settings.heading }}</h3>
+              {%- assign footer_menu = linklists[block.settings.menu] -%}
+              {%- if footer_menu != blank -%}
+                <ul class="footer__menu-list">
+                  {%- for link in footer_menu.links -%}
+                    <li class="footer__menu-item">
+                      <a href="{{ link.url }}" class="footer__menu-link">{{ link.title }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+
+          {%- when 'text' -%}
+            <div class="footer__column footer__column--text" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                <h3 class="footer__heading h5">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+              <div class="footer__text rte">{{ block.settings.text }}</div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+
+      {/* Newsletter column */}
+      {%- if section.settings.show_newsletter -%}
+        <div class="footer__column footer__column--newsletter">
+          {%- if newsletter_heading != blank -%}
+            <h3 class="footer__heading h5">{{ newsletter_heading }}</h3>
+          {%- endif -%}
+          {%- if newsletter_text != blank -%}
+            <p class="footer__newsletter-text">{{ newsletter_text }}</p>
+          {%- endif -%}
+
+          {%- form 'customer', id: 'footer-newsletter-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="footer__newsletter-form">
+              {%- if form.errors -%}
+                <div class="footer__newsletter-errors" role="alert">
+                  {{ form.errors | default_errors }}
+                </div>
+              {%- endif -%}
+              {%- if form.posted_successfully? -%}
+                <p class="footer__newsletter-success" role="status">
+                  Merci pour votre inscription !
+                </p>
+              {%- endif -%}
+              <div class="footer__newsletter-input-wrap">
+                <label for="footer-newsletter-email" class="visually-hidden">Adresse e-mail</label>
+                <input
+                  type="email"
+                  id="footer-newsletter-email"
+                  name="contact[email]"
+                  class="footer__newsletter-input"
+                  placeholder="Votre adresse e-mail"
+                  required
+                  autocomplete="email"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  aria-label="Adresse e-mail pour la newsletter"
+                  {% if form.posted_successfully? %}value=""{% endif %}
+                >
+                <button type="submit" class="footer__newsletter-submit" aria-label="S'inscrire à la newsletter">
+                  {% render 'icon', name: 'arrow-right' %}
+                </button>
+              </div>
+            </div>
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {/* Bottom bar */}
+  <div class="footer__bottom">
+    <div class="footer__bottom-container">
+      <div class="footer__copyright">
+        <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits réservés.</p>
+      </div>
+
+      {%- if show_payment_icons -%}
+        <div class="footer__payment" aria-label="Moyens de paiement acceptés">
+          <span class="visually-hidden">Nous acceptons :</span>
+          <ul class="footer__payment-list">
+            {%- for type in shop.enabled_payment_types -%}
+              <li class="footer__payment-item">
+                {{ type | payment_type_svg_tag: class: 'footer__payment-icon' }}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.legal_menu != blank -%}
+        {%- assign legal_links = linklists[section.settings.legal_menu] -%}
+        {%- if legal_links != blank -%}
+          <nav class="footer__legal" aria-label="Mentions légales">
+            <ul class="footer__legal-list">
+              {%- for link in legal_links.links -%}
+                <li class="footer__legal-item">
+                  <a href="{{ link.url }}" class="footer__legal-link">{{ link.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+<style>
+  :root {
+    --footer-bg: {{ section.settings.footer_bg_color }};
+    --footer-text: {{ section.settings.footer_text_color }};
+    --footer-accent: #C4853A;
+  }
+
+  /* ===== Reassurance Strip ===== */
+  .reassurance-strip {
+    background-color: #F7F5F0;
+    border-top: 1px solid #E8E4DC;
+    border-bottom: 1px solid #E8E4DC;
+    padding: 1.5rem 0;
+  }
+
+  .reassurance-strip__container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .reassurance-strip__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+  }
+
+  .reassurance-strip__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--footer-accent);
+  }
+
+  .reassurance-strip__icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .reassurance-strip__title {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #2C2C2C;
+  }
+
+  .reassurance-strip__text {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    color: #666;
+  }
+
+  /* ===== Footer ===== */
+  .footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+  }
+
+  .footer__container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 2.5rem;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 750px) {
+    .footer__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 990px) {
+    .footer__grid {
+      grid-template-columns: 1.5fr repeat(2, 1fr) 1.25fr;
+      gap: 2rem;
+    }
+  }
+
+  /* ===== Brand Column ===== */
+  .footer__logo-link {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .footer__logo-image {
+    display: block;
+    height: auto;
+  }
+
+  .footer__logo-text {
+    font-family: 'DM Serif Display', serif;
+    color: inherit;
+  }
+
+  .footer__tagline {
+    margin: 1rem 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: inherit;
+    opacity: 0.8;
+    max-width: 20rem;
+  }
+
+  /* ===== Social Icons ===== */
+  .footer__social {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .footer__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    color: inherit;
+    background-color: rgba(0, 0, 0, 0.06);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .footer__social-link:hover {
+    background-color: var(--footer-accent);
+    color: #fff;
+  }
+
+  .footer__social-link svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* ===== Nav Columns ===== */
+  .footer__heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0 0 1rem;
+    color: inherit;
+  }
+
+  .footer__menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer__menu-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer__menu-link {
+    font-size: 0.875rem;
+    color: inherit;
+    opacity: 0.75;
+    text-decoration: none;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .footer__menu-link:hover {
+    opacity: 1;
+    color: var(--footer-accent);
+  }
+
+  /* ===== Text Block ===== */
+  .footer__text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+
+  /* ===== Newsletter ===== */
+  .footer__newsletter-text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    margin: 0 0 1rem;
+  }
+
+  .footer__newsletter-input-wrap {
+    display: flex;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .footer__newsletter-input-wrap:focus-within {
+    border-color: var(--footer-accent);
+  }
+
+  .footer__newsletter-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+  }
+
+  .footer__newsletter-input::placeholder {
+    color: inherit;
+    opacity: 0.5;
+  }
+
+  .footer__newsletter-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    background: var(--footer-accent);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .footer__newsletter-submit:hover {
+    background-color: #b3742f;
+  }
+
+  .footer__newsletter-submit svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .footer__newsletter-errors {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: #fef2f2;
+    color: #dc2626;
+    font-size: 0.8125rem;
+    border-radius: 0.25rem;
+  }
+
+  .footer__newsletter-success {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: #f0fdf4;
+    color: #16a34a;
+    font-size: 0.8125rem;
+    border-radius: 0.25rem;
+  }
+
+  /* ===== Bottom Bar ===== */
+  .footer__bottom {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .footer__bottom-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .footer__copyright p {
+    margin: 0;
+    font-size: 0.8125rem;
+    opacity: 0.6;
+  }
+
+  .footer__payment-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer__payment-icon {
+    height: 1.5rem;
+    width: auto;
+  }
+
+  .footer__legal-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer__legal-link {
+    font-size: 0.75rem;
+    color: inherit;
+    opacity: 0.6;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer__legal-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 749px) {
+    .footer__bottom-container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Pied de page",
+  "tag": "section",
+  "class": "footer-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo et marque"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo du pied de page"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Description / accroche",
+      "default": "Savoir-faire artisanal, qualité premium. Chaque produit raconte une histoire unique."
+    },
+    {
+      "type": "header",
+      "content": "Réseaux sociaux"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Lien Facebook"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Lien Instagram"
+    },
+    {
+      "type": "url",
+      "id": "social_pinterest",
+      "label": "Lien Pinterest"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "Lien TikTok"
+    },
+    {
+      "type": "url",
+      "id": "social_linkedin",
+      "label": "Lien LinkedIn"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Afficher le bloc newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Titre de la newsletter",
+      "default": "Restez informé"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Texte de la newsletter",
+      "default": "Recevez nos nouveautés et offres exclusives directement dans votre boîte mail."
+    },
+    {
+      "type": "header",
+      "content": "Barre inférieure"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Afficher les icônes de paiement",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Menu des mentions légales"
+    },
+    {
+      "type": "header",
+      "content": "Bandeau de réassurance"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reassurance",
+      "label": "Afficher le bandeau de réassurance",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "footer_bg_color",
+      "label": "Couleur de fond",
+      "default": "#2C2C2C"
+    },
+    {
+      "type": "color",
+      "id": "footer_text_color",
+      "label": "Couleur du texte",
+      "default": "#F7F5F0"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Colonne de menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre de la colonne",
+          "default": "Navigation"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Bloc de texte",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Contenu texte",
+          "default": "<p>Informations supplémentaires sur votre entreprise.</p>"
+        }
+      ]
+    },
+    {
+      "type": "reassurance",
+      "name": "Élément de réassurance",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Nom de l'icône",
+          "info": "Nom du fichier dans le snippet icon (ex : shipping, lock, star, return)",
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Livraison soignée"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Description",
+          "default": "Expédition sous 48h"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "menu",
+        "settings": {
+          "heading": "À propos",
+          "menu": "footer"
+        }
+      },
+      {
+        "type": "menu",
+        "settings": {
+          "heading": "Informations",
+          "menu": "footer"
+        }
+      },
+      {
+        "type": "reassurance",
+        "settings": {
+          "icon": "shipping",
+          "title": "Livraison soignée",
+          "text": "Expédition sous 48h"
+        }
+      },
+      {
+        "type": "reassurance",
+        "settings": {
+          "icon": "lock",
+          "title": "Paiement sécurisé",
+          "text": "CB, PayPal, Apple Pay"
+        }
+      },
+      {
+        "type": "reassurance",
+        "settings": {
+          "icon": "return",
+          "title": "Retours gratuits",
+          "text": "Sous 14 jours"
+        }
+      },
+      {
+        "type": "reassurance",
+        "settings": {
+          "icon": "star",
+          "title": "Fait main en France",
+          "text": "Savoir-faire artisanal"
+        }
+      }
+    ]
+  },
+  "presets": [
+    {
+      "name": "Pied de page",
+      "blocks": [
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "À propos",
+            "menu": "footer"
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Informations",
+            "menu": "footer"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

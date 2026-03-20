@@ -1,0 +1,140 @@
+{{ 'section-featured-collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign collection = section.settings.collection
+  assign columns = section.settings.columns
+  assign products_count = section.settings.products_count
+-%}
+
+<section
+  id="featured-collection-{{ section.id }}"
+  class="featured-collection section-spacing"
+  style="--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+  data-section-id="{{ section.id }}"
+  data-section-type="featured-collection"
+>
+  <div class="container">
+    {%- if section.settings.heading != blank or section.settings.subtitle != blank -%}
+      <div class="section-header" data-aos="fade-up">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="section-header__heading h2">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="section-header__subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="featured-collection__grid grid grid--{{ columns }}-col" data-aos="fade-up" data-aos-delay="100">
+      {%- if collection != blank and collection.products.size > 0 -%}
+        {%- for product in collection.products limit: products_count -%}
+          <div class="featured-collection__item grid__item" data-aos="fade-up" data-aos-delay="{{ forloop.index | times: 100 }}">
+            {% render 'product-card', product: product %}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..products_count) -%}
+          <div class="featured-collection__item grid__item" data-aos="fade-up" data-aos-delay="{{ forloop.index | times: 100 }}">
+            <div class="product-card product-card--placeholder">
+              <div class="product-card__media">
+                {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+              </div>
+              <div class="product-card__info">
+                <h3 class="product-card__title">Exemple de produit</h3>
+                <p class="product-card__price">{{ 2999 | money }}</p>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_view_all and collection != blank -%}
+      <div class="featured-collection__footer" data-aos="fade-up">
+        <a href="{{ collection.url }}" class="btn btn--outline">
+          Voir la collection
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection vedette",
+  "tag": "section",
+  "class": "section-featured-collection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Nos produits phares"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Une sélection de nos meilleures créations"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Nombre de colonnes"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Nombre de produits à afficher"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Afficher le lien « Voir la collection »",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Espacement supérieur"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Espacement inférieur"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection vedette"
+    }
+  ]
+}
+{% endschema %}

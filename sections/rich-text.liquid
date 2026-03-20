@@ -1,0 +1,122 @@
+{{ 'section-rich-text.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign text_width = section.settings.text_width
+-%}
+
+<section
+  id="rich-text-{{ section.id }}"
+  class="rich-text section-spacing"
+  style="--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+  data-section-id="{{ section.id }}"
+  data-section-type="rich-text"
+>
+  <div class="container">
+    <div class="rich-text__wrapper rich-text__wrapper--{{ text_width }}" data-aos="fade-up">
+      {%- if section.settings.label != blank -%}
+        <span class="badge badge--pill" data-aos="fade-up" data-aos-delay="100">
+          {{ section.settings.label }}
+        </span>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="rich-text__heading h2" data-aos="fade-up" data-aos-delay="150">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="rich-text__content rte" data-aos="fade-up" data-aos-delay="200">
+          {{ section.settings.text }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.button_text != blank -%}
+        <div class="rich-text__button" data-aos="fade-up" data-aos-delay="250">
+          <a
+            href="{{ section.settings.button_link }}"
+            class="btn btn--primary"
+            {% if section.settings.button_link == blank %}aria-disabled="true"{% endif %}
+          >
+            {{ section.settings.button_text }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Texte enrichi",
+  "tag": "section",
+  "class": "section-rich-text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Étiquette",
+      "info": "Petit badge affiché au-dessus du titre"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Notre engagement qualité"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Contenu",
+      "default": "<p>Depuis notre création, nous mettons un point d'honneur à proposer des produits d'exception, alliant tradition et modernité. Chaque pièce est conçue avec soin dans notre atelier, en utilisant des matériaux nobles et durables.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "info": "Laissez vide pour masquer le bouton"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "select",
+      "id": "text_width",
+      "label": "Largeur du contenu",
+      "options": [
+        { "value": "narrow", "label": "Étroit" },
+        { "value": "medium", "label": "Moyen" },
+        { "value": "full", "label": "Pleine largeur" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Espacement supérieur"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Espacement inférieur"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Texte enrichi"
+    }
+  ]
+}
+{% endschema %}

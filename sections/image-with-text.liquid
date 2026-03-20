@@ -1,0 +1,162 @@
+{{ 'section-image-with-text.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign image_position = section.settings.image_position
+  assign color_scheme = section.settings.color_scheme
+-%}
+
+<section
+  id="image-with-text-{{ section.id }}"
+  class="image-with-text image-with-text--{{ image_position }} image-with-text--{{ color_scheme }} section-spacing"
+  style="--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+  data-section-id="{{ section.id }}"
+  data-section-type="image-with-text"
+>
+  <div class="container">
+    <div class="image-with-text__grid">
+      <div class="image-with-text__media" data-aos="fade-{% if image_position == 'left' %}right{% else %}left{% endif %}">
+        {%- if section.settings.image != blank -%}
+          <div class="image-with-text__image-wrapper">
+            <img
+              src="{{ section.settings.image | image_url: width: 960 }}"
+              srcset="
+                {{ section.settings.image | image_url: width: 480 }} 480w,
+                {{ section.settings.image | image_url: width: 720 }} 720w,
+                {{ section.settings.image | image_url: width: 960 }} 960w
+              "
+              sizes="(max-width: 749px) 100vw, 50vw"
+              alt="{{ section.settings.image.alt | escape }}"
+              loading="lazy"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+              class="image-with-text__image"
+            >
+          </div>
+        {%- else -%}
+          <div class="image-with-text__placeholder">
+            {{ 'image' | placeholder_svg_tag: 'image-with-text__placeholder-svg' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="image-with-text__content" data-aos="fade-{% if image_position == 'left' %}left{% else %}right{% endif %}">
+        <div class="image-with-text__content-inner">
+          {%- if section.settings.label != blank -%}
+            <span class="badge badge--pill">{{ section.settings.label }}</span>
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <h2 class="image-with-text__heading h2">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+
+          {%- if section.settings.text != blank -%}
+            <div class="image-with-text__text rte">
+              {{ section.settings.text }}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.button_text != blank -%}
+            <a
+              href="{{ section.settings.button_link }}"
+              class="btn btn--primary"
+              {% if section.settings.button_link == blank %}aria-disabled="true"{% endif %}
+            >
+              {{ section.settings.button_text }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image avec texte",
+  "tag": "section",
+  "class": "section-image-with-text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Position de l'image",
+      "options": [
+        { "value": "left", "label": "Gauche" },
+        { "value": "right", "label": "Droite" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Étiquette",
+      "default": "Notre savoir-faire",
+      "info": "Petit badge affiché au-dessus du titre"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "L'excellence artisanale"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Chaque pièce est le fruit d'un travail minutieux, réalisé dans le respect des traditions et avec des matériaux soigneusement sélectionnés. Notre engagement : vous offrir des produits d'exception qui traversent le temps.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "En savoir plus"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Schéma de couleurs",
+      "options": [
+        { "value": "default", "label": "Par défaut" },
+        { "value": "accent", "label": "Accent" },
+        { "value": "dark", "label": "Sombre" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Espacement supérieur"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px",
+      "label": "Espacement inférieur"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image avec texte"
+    }
+  ]
+}
+{% endschema %}

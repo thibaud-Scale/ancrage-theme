@@ -1,0 +1,159 @@
+{% comment %}
+  Snippet: social-sharing.liquid
+  Theme: Ancrage
+  Usage: {% render 'social-sharing', title: page_title, url: canonical_url, image: image_url %}
+  Accepts:
+    - title {String} Page title for sharing
+    - url {String} URL to share
+    - image {String} Image URL for Pinterest
+{% endcomment %}
+
+{%- liquid
+  assign share_title = title | default: page_title | url_encode
+  assign share_url = url | default: canonical_url | url_encode
+  assign share_image = image | default: ''
+-%}
+
+<div class="social-sharing" role="group" aria-label="Partager">
+  <span class="social-sharing__label">Partager</span>
+
+  <ul class="social-sharing__list" role="list">
+    <!-- Facebook -->
+    <li class="social-sharing__item">
+      <a
+        href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}"
+        class="social-sharing__link social-sharing__link--facebook"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Partager sur Facebook"
+        title="Partager sur Facebook"
+      >
+        {% render 'icon', name: 'facebook' %}
+      </a>
+    </li>
+
+    <!-- Twitter / X -->
+    <li class="social-sharing__item">
+      <a
+        href="https://twitter.com/intent/tweet?text={{ share_title }}&url={{ share_url }}"
+        class="social-sharing__link social-sharing__link--twitter"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Partager sur X (Twitter)"
+        title="Partager sur X (Twitter)"
+      >
+        {% render 'icon', name: 'twitter' %}
+      </a>
+    </li>
+
+    <!-- Pinterest -->
+    <li class="social-sharing__item">
+      <a
+        href="https://pinterest.com/pin/create/button/?url={{ share_url }}&description={{ share_title }}{% if share_image != blank %}&media={{ share_image | url_encode }}{% endif %}"
+        class="social-sharing__link social-sharing__link--pinterest"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Épingler sur Pinterest"
+        title="Épingler sur Pinterest"
+      >
+        {% render 'icon', name: 'pinterest' %}
+      </a>
+    </li>
+
+    <!-- WhatsApp -->
+    <li class="social-sharing__item">
+      <a
+        href="https://api.whatsapp.com/send?text={{ share_title }}%20{{ share_url }}"
+        class="social-sharing__link social-sharing__link--whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Partager sur WhatsApp"
+        title="Partager sur WhatsApp"
+      >
+        {% render 'icon', name: 'whatsapp' %}
+      </a>
+    </li>
+
+    <!-- Email -->
+    <li class="social-sharing__item">
+      <a
+        href="mailto:?subject={{ share_title }}&body={{ share_url }}"
+        class="social-sharing__link social-sharing__link--email"
+        aria-label="Partager par e-mail"
+        title="Partager par e-mail"
+      >
+        {% render 'icon', name: 'mail' %}
+      </a>
+    </li>
+  </ul>
+</div>
+
+<style>
+  .social-sharing {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .social-sharing__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .social-sharing__list {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .social-sharing__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: #666;
+    background-color: #F7F5F0;
+    text-decoration: none;
+    transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .social-sharing__link:hover {
+    transform: translateY(-2px);
+  }
+
+  .social-sharing__link svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .social-sharing__link--facebook:hover {
+    background-color: #1877F2;
+    color: #fff;
+  }
+
+  .social-sharing__link--twitter:hover {
+    background-color: #1a1a1a;
+    color: #fff;
+  }
+
+  .social-sharing__link--pinterest:hover {
+    background-color: #E60023;
+    color: #fff;
+  }
+
+  .social-sharing__link--whatsapp:hover {
+    background-color: #25D366;
+    color: #fff;
+  }
+
+  .social-sharing__link--email:hover {
+    background-color: #C4853A;
+    color: #fff;
+  }
+</style>

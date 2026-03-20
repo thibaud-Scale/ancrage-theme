@@ -1,0 +1,59 @@
+{
+  "sections": {
+    "contact-info": {
+      "type": "contact-info",
+      "settings": {
+        "heading": "Contactez-nous",
+        "subheading": "Une question ? N'hésitez pas à nous contacter. Notre équipe vous répondra dans les plus brefs délais.",
+        "show_phone": true,
+        "show_email": true,
+        "show_address": true,
+        "show_hours": true
+      },
+      "blocks": {
+        "phone": {
+          "type": "info_item",
+          "settings": {
+            "icon": "phone",
+            "label": "Téléphone",
+            "text": ""
+          }
+        },
+        "email": {
+          "type": "info_item",
+          "settings": {
+            "icon": "email",
+            "label": "E-mail",
+            "text": ""
+          }
+        },
+        "address": {
+          "type": "info_item",
+          "settings": {
+            "icon": "map-pin",
+            "label": "Adresse",
+            "text": ""
+          }
+        },
+        "hours": {
+          "type": "info_item",
+          "settings": {
+            "icon": "clock",
+            "label": "Horaires d'ouverture",
+            "text": "Lundi - Vendredi : 9h - 18h"
+          }
+        }
+      },
+      "block_order": ["phone", "email", "address", "hours"]
+    },
+    "main-page": {
+      "type": "main-page",
+      "settings": {
+        "show_title": false,
+        "padding_top": 40,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": ["contact-info", "main-page"]
+}

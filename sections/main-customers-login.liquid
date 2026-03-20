@@ -1,0 +1,201 @@
+<section class="main-customers-login section-padding" data-section-id="{{ section.id }}" aria-label="Connexion">
+  <div class="container">
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-card__header text-center">
+          <h1 class="auth-card__title h3">Connexion</h1>
+          <p class="auth-card__subtitle text-muted">Connectez-vous à votre compte</p>
+        </div>
+
+        {%- form 'customer_login' -%}
+          {%- if form.errors -%}
+            <div class="form-status form-status--error" role="alert">
+              <p>{{ form.errors | default_errors }}</p>
+            </div>
+          {%- endif -%}
+
+          <div class="form-group">
+            <label for="customer-email" class="form-label">Adresse e-mail</label>
+            <input
+              type="email"
+              id="customer-email"
+              name="customer[email]"
+              autocomplete="email"
+              required
+              class="form-input"
+              placeholder="votre@email.fr"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="customer-password" class="form-label">
+              Mot de passe
+              <a href="#recover" class="auth-forgot-link text-sm" id="recover-toggle">Mot de passe oublié ?</a>
+            </label>
+            <input
+              type="password"
+              id="customer-password"
+              name="customer[password]"
+              autocomplete="current-password"
+              required
+              class="form-input"
+              placeholder="Votre mot de passe"
+            >
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--large btn--full">
+            Se connecter
+          </button>
+        {%- endform -%}
+
+        <div class="auth-card__footer text-center">
+          <p class="text-sm text-muted">
+            Pas encore de compte ?
+            <a href="{{ routes.account_register_url }}" class="auth-link">Créer un compte</a>
+          </p>
+        </div>
+      </div>
+
+      {%- comment -%} Recover Password Form {%- endcomment -%}
+      <div class="auth-card auth-card--recover" id="recover-form" style="display: none;">
+        <div class="auth-card__header text-center">
+          <h2 class="auth-card__title h3">Réinitialiser le mot de passe</h2>
+          <p class="auth-card__subtitle text-muted">Nous vous enverrons un e-mail pour réinitialiser votre mot de passe.</p>
+        </div>
+
+        {%- form 'recover_customer_password' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="form-status form-status--success" role="status">
+              <p>Un e-mail vous a été envoyé avec les instructions de réinitialisation.</p>
+            </div>
+          {%- endif -%}
+
+          <div class="form-group">
+            <label for="recover-email" class="form-label">Adresse e-mail</label>
+            <input
+              type="email"
+              id="recover-email"
+              name="email"
+              autocomplete="email"
+              required
+              class="form-input"
+              placeholder="votre@email.fr"
+            >
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--large btn--full">
+            Envoyer le lien
+          </button>
+        {%- endform -%}
+
+        <div class="auth-card__footer text-center">
+          <p class="text-sm text-muted">
+            <a href="#login" class="auth-link" id="login-toggle">Retour à la connexion</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .auth-wrapper {
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .auth-card {
+    background: var(--color-background, #fff);
+    border: 1px solid var(--color-border, #eee);
+    border-radius: var(--radius-lg, 12px);
+    padding: 2.5rem 2rem;
+  }
+
+  .auth-card__header {
+    margin-bottom: 2rem;
+  }
+
+  .auth-card__title {
+    font-family: var(--font-heading);
+    color: var(--color-text, #2c2c2c);
+    margin: 0 0 0.5rem;
+  }
+
+  .auth-card__subtitle {
+    margin: 0;
+    font-size: 0.938rem;
+  }
+
+  .auth-card__footer {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border, #eee);
+  }
+
+  .auth-forgot-link {
+    float: right;
+    color: var(--color-accent, #c45e3a);
+    text-decoration: none;
+  }
+
+  .auth-forgot-link:hover {
+    text-decoration: underline;
+  }
+
+  .auth-link {
+    color: var(--color-accent, #c45e3a);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .auth-link:hover {
+    text-decoration: underline;
+  }
+
+  .form-group { margin-bottom: 1.25rem; }
+  .form-label { display: block; margin-bottom: 0.375rem; font-size: 0.875rem; font-weight: 500; color: var(--color-text, #2c2c2c); }
+  .form-input { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-border, #ddd); border-radius: var(--radius-md, 8px); font-size: 0.938rem; font-family: inherit; transition: border-color 0.2s; background: var(--color-background, #fff); }
+  .form-input:focus { outline: none; border-color: var(--color-primary, #2c2c2c); box-shadow: 0 0 0 3px rgba(44,44,44,0.1); }
+  .form-status { padding: 1rem; border-radius: var(--radius-md, 8px); margin-bottom: 1rem; font-size: 0.875rem; }
+  .form-status--success { background: #e8f5e9; color: #2e7d32; }
+  .form-status--error { background: #fce4ec; color: #c62828; }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var recoverToggle = document.getElementById('recover-toggle');
+    var loginToggle = document.getElementById('login-toggle');
+    var recoverForm = document.getElementById('recover-form');
+    var loginCards = document.querySelectorAll('.auth-card:not(.auth-card--recover)');
+
+    if (recoverToggle && recoverForm) {
+      recoverToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        loginCards.forEach(function (c) { c.style.display = 'none'; });
+        recoverForm.style.display = 'block';
+      });
+    }
+
+    if (loginToggle && recoverForm) {
+      loginToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        recoverForm.style.display = 'none';
+        loginCards.forEach(function (c) { c.style.display = 'block'; });
+      });
+    }
+
+    // Auto-show recover form if hash
+    if (window.location.hash === '#recover') {
+      loginCards.forEach(function (c) { c.style.display = 'none'; });
+      if (recoverForm) recoverForm.style.display = 'block';
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Connexion client",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,138 @@
+<section class="main-page section-padding" data-section-id="{{ section.id }}">
+  <div class="container">
+    <div class="page-content page-content--{{ section.settings.content_width }}">
+      {%- if section.settings.show_title -%}
+        <header class="page-header">
+          <h1 class="page-header__title h2">{{ page.title }}</h1>
+        </header>
+      {%- endif -%}
+
+      <div class="page-body rte">
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .main-page {
+    background: var(--color-background, #fff);
+  }
+
+  .page-content {
+    margin: 0 auto;
+  }
+
+  .page-content--narrow {
+    max-width: 680px;
+  }
+
+  .page-content--medium {
+    max-width: 900px;
+  }
+
+  .page-content--full {
+    max-width: 100%;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border, #eee);
+  }
+
+  .page-header__title {
+    font-family: var(--font-heading);
+    color: var(--color-text, #2c2c2c);
+    margin: 0;
+  }
+
+  .page-body {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text, #2c2c2c);
+  }
+
+  .page-body h2,
+  .page-body h3,
+  .page-body h4 {
+    font-family: var(--font-heading);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-body p {
+    margin-bottom: 1.25rem;
+  }
+
+  .page-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md, 8px);
+    margin: 1.5rem 0;
+  }
+
+  .page-body ul,
+  .page-body ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .page-body li {
+    margin-bottom: 0.5rem;
+  }
+
+  .page-body blockquote {
+    border-left: 3px solid var(--color-primary, #2c2c2c);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--color-text-muted, #666);
+    background: var(--color-surface-subtle, #faf9f7);
+    border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+  }
+
+  .page-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  .page-body th,
+  .page-body td {
+    padding: 0.75rem;
+    border: 1px solid var(--color-border, #eee);
+    text-align: left;
+  }
+
+  .page-body th {
+    background: var(--color-surface-subtle, #faf9f7);
+    font-weight: 600;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Contenu de page",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Afficher le titre de la page",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Largeur du contenu",
+      "options": [
+        { "value": "narrow", "label": "Étroit" },
+        { "value": "medium", "label": "Moyen" },
+        { "value": "full", "label": "Pleine largeur" }
+      ],
+      "default": "medium"
+    }
+  ]
+}
+{% endschema %}

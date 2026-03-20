@@ -1,0 +1,291 @@
+{% comment %}
+  Snippet: seo-schema.liquid
+  Theme: Ancrage
+  Usage: {% render 'seo-schema' %}
+  Outputs JSON-LD structured data based on the current page template.
+{% endcomment %}
+
+{%- comment -%} BreadcrumbList schema for all pages {%- endcomment -%}
+{%- unless template == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "{{ shop.url }}"
+        }
+        {%- if template contains 'collection' and collection -%}
+          ,{
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ collection.title | json }},
+            "item": "{{ shop.url }}{{ collection.url }}"
+          }
+        {%- endif -%}
+        {%- if template contains 'product' and product -%}
+          {%- if product.collections.size > 0 -%}
+            ,{
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ product.collections.first.title | json }},
+              "item": "{{ shop.url }}{{ product.collections.first.url }}"
+            }
+            ,{
+              "@type": "ListItem",
+              "position": 3,
+              "name": {{ product.title | json }},
+              "item": "{{ shop.url }}{{ product.url }}"
+            }
+          {%- else -%}
+            ,{
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ product.title | json }},
+              "item": "{{ shop.url }}{{ product.url }}"
+            }
+          {%- endif -%}
+        {%- endif -%}
+        {%- if template contains 'article' and article -%}
+          {%- if blog -%}
+            ,{
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ blog.title | json }},
+              "item": "{{ shop.url }}{{ blog.url }}"
+            }
+            ,{
+              "@type": "ListItem",
+              "position": 3,
+              "name": {{ article.title | json }},
+              "item": "{{ shop.url }}{{ article.url }}"
+            }
+          {%- else -%}
+            ,{
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ article.title | json }},
+              "item": "{{ shop.url }}{{ article.url }}"
+            }
+          {%- endif -%}
+        {%- endif -%}
+        {%- if template == 'page' and page -%}
+          ,{
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ page.title | json }},
+            "item": "{{ shop.url }}{{ page.url }}"
+          }
+        {%- endif -%}
+        {%- if template == 'blog' and blog -%}
+          ,{
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ blog.title | json }},
+            "item": "{{ shop.url }}{{ blog.url }}"
+          }
+        {%- endif -%}
+        {%- if template == 'cart' -%}
+          ,{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Panier",
+            "item": "{{ shop.url }}/cart"
+          }
+        {%- endif -%}
+      ]
+    }
+  </script>
+{%- endunless -%}
+
+{%- comment -%} Product schema {%- endcomment -%}
+{%- if template contains 'product' and product -%}
+  {%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign rating_value = product.metafields.reviews.rating.value | default: nil
+    assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "url": "{{ shop.url }}{{ product.url }}",
+      "description": {{ product.description | strip_html | truncate: 5000 | json }},
+      {%- if product.featured_image -%}
+        "image": [
+          "{{ product.featured_image | image_url: width: 1200 }}"
+          {%- for image in product.images offset: 1 limit: 4 -%}
+            ,"{{ image | image_url: width: 1200 }}"
+          {%- endfor -%}
+        ],
+      {%- endif -%}
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      {%- if current_variant.sku != blank -%}
+        "sku": {{ current_variant.sku | json }},
+        "mpn": {{ current_variant.sku | json }},
+      {%- endif -%}
+      {%- if current_variant.barcode != blank -%}
+        "gtin": {{ current_variant.barcode | json }},
+      {%- endif -%}
+      {%- if rating_value and rating_count > 0 -%}
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "{{ rating_value }}",
+          "reviewCount": "{{ rating_count }}",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+      {%- endif -%}
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ shop.url }}{{ product.url }}",
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": "{{ current_variant.price | money_without_currency | strip_html | strip }}",
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          "priceValidUntil": "{{ 'now' | date: '%Y' | plus: 1 }}-12-31",
+        {%- endif -%}
+        "availability": "https://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+        "seller": {
+          "@type": "Organization",
+          "name": {{ shop.name | json }}
+        }
+      }
+    }
+  </script>
+{%- endif -%}
+
+{%- comment -%} CollectionPage schema {%- endcomment -%}
+{%- if template contains 'collection' and collection -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": {{ collection.title | json }},
+      "url": "{{ shop.url }}{{ collection.url }}",
+      "description": {{ collection.description | strip_html | truncate: 5000 | json }},
+      {%- if collection.image -%}
+        "image": "{{ collection.image | image_url: width: 1200 }}",
+      {%- endif -%}
+      "numberOfItems": {{ collection.products_count }},
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": {{ shop.name | json }},
+        "url": "{{ shop.url }}"
+      }
+    }
+  </script>
+{%- endif -%}
+
+{%- comment -%} Article schema {%- endcomment -%}
+{%- if template contains 'article' and article -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": {{ article.title | json }},
+      "url": "{{ shop.url }}{{ article.url }}",
+      "description": {{ article.excerpt_or_content | strip_html | truncate: 5000 | json }},
+      "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+      "dateModified": "{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+      {%- if article.image -%}
+        "image": "{{ article.image | image_url: width: 1200 }}",
+      {%- endif -%}
+      "author": {
+        "@type": "Person",
+        "name": {{ article.author | json }}
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": {{ shop.name | json }},
+        "url": "{{ shop.url }}"
+        {%- if settings.logo -%}
+          ,"logo": {
+            "@type": "ImageObject",
+            "url": "{{ settings.logo | image_url: width: 600 }}"
+          }
+        {%- endif -%}
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ shop.url }}{{ article.url }}"
+      }
+    }
+  </script>
+{%- endif -%}
+
+{%- comment -%} LocalBusiness schema for homepage {%- endcomment -%}
+{%- if template == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": {{ settings.business_name | default: shop.name | json }},
+      "url": "{{ shop.url }}",
+      {%- if settings.logo -%}
+        "logo": "{{ settings.logo | image_url: width: 600 }}",
+        "image": "{{ settings.logo | image_url: width: 600 }}",
+      {%- endif -%}
+      {%- if settings.business_description -%}
+        "description": {{ settings.business_description | json }},
+      {%- endif -%}
+      {%- if settings.business_phone -%}
+        "telephone": {{ settings.business_phone | json }},
+      {%- endif -%}
+      {%- if settings.business_email -%}
+        "email": {{ settings.business_email | json }},
+      {%- endif -%}
+      {%- if settings.business_address or settings.business_city -%}
+        "address": {
+          "@type": "PostalAddress"
+          {%- if settings.business_address -%}
+            ,"streetAddress": {{ settings.business_address | json }}
+          {%- endif -%}
+          {%- if settings.business_city -%}
+            ,"addressLocality": {{ settings.business_city | json }}
+          {%- endif -%}
+          {%- if settings.business_postal_code -%}
+            ,"postalCode": {{ settings.business_postal_code | json }}
+          {%- endif -%}
+          {%- if settings.business_country -%}
+            ,"addressCountry": {{ settings.business_country | json }}
+          {%- else -%}
+            ,"addressCountry": "FR"
+          {%- endif -%}
+        },
+      {%- endif -%}
+      {%- if settings.business_opening_hours -%}
+        "openingHours": {{ settings.business_opening_hours | json }},
+      {%- endif -%}
+      "sameAs": [
+        {%- assign social_links = '' -%}
+        {%- if settings.social_facebook_link != blank -%}
+          {%- unless social_links == '' -%},{%- endunless -%}
+          {%- assign social_links = social_links | append: 'x' -%}
+          "{{ settings.social_facebook_link }}"
+        {%- endif -%}
+        {%- if settings.social_instagram_link != blank -%}
+          {%- unless social_links == '' -%},{%- endunless -%}
+          {%- assign social_links = social_links | append: 'x' -%}
+          "{{ settings.social_instagram_link }}"
+        {%- endif -%}
+        {%- if settings.social_twitter_link != blank -%}
+          {%- unless social_links == '' -%},{%- endunless -%}
+          {%- assign social_links = social_links | append: 'x' -%}
+          "{{ settings.social_twitter_link }}"
+        {%- endif -%}
+        {%- if settings.social_youtube_link != blank -%}
+          {%- unless social_links == '' -%},{%- endunless -%}
+          {%- assign social_links = social_links | append: 'x' -%}
+          "{{ settings.social_youtube_link }}"
+        {%- endif -%}
+      ]
+    }
+  </script>
+{%- endif -%}

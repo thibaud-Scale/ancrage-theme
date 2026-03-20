@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main-customers-login": {
+      "type": "main-customers-login",
+      "settings": {
+        "show_guest_checkout": true
+      }
+    }
+  },
+  "order": ["main-customers-login"]
+}

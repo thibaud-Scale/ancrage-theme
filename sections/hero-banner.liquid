@@ -1,0 +1,238 @@
+{{ 'section-hero-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+  assign min_height = section.settings.min_height
+  assign text_alignment = section.settings.text_alignment
+  assign color_scheme = section.settings.color_scheme
+-%}
+
+<section
+  id="hero-banner-{{ section.id }}"
+  class="hero-banner hero-banner--{{ color_scheme }} hero-banner--align-{{ text_alignment }}"
+  style="--hero-min-height: {{ min_height }}vh; --hero-overlay-opacity: {{ overlay_opacity }}; --section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
+  data-section-id="{{ section.id }}"
+  data-section-type="hero-banner"
+  aria-label="{{ section.settings.heading | escape }}"
+>
+  <div class="hero-banner__media">
+    {%- if section.settings.video_url != blank -%}
+      <video
+        class="hero-banner__video"
+        autoplay
+        muted
+        loop
+        playsinline
+        aria-hidden="true"
+      >
+        <source src="{{ section.settings.video_url }}" type="video/mp4">
+      </video>
+    {%- elsif section.settings.image != blank -%}
+      {%- assign img = section.settings.image -%}
+      <picture>
+        <source media="(max-width: 749px)" srcset="{{ img | image_url: width: 750 }}">
+        <source media="(min-width: 750px)" srcset="{{ img | image_url: width: 1920 }}">
+        <img
+          src="{{ img | image_url: width: 1920 }}"
+          alt="{{ img.alt | escape }}"
+          loading="eager"
+          fetchpriority="high"
+          width="{{ img.width }}"
+          height="{{ img.height }}"
+          class="hero-banner__image"
+        >
+      </picture>
+    {%- else -%}
+      <div class="hero-banner__placeholder">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-banner__placeholder-svg' }}
+      </div>
+    {%- endif -%}
+    <div class="hero-banner__overlay" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero-banner__content container" data-aos="fade-up">
+    <div class="hero-banner__content-inner">
+      {%- if section.settings.label != blank -%}
+        <span class="hero-banner__label badge badge--pill" data-aos="fade-up" data-aos-delay="100">
+          {{ section.settings.label }}
+        </span>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h1 class="hero-banner__heading h0" data-aos="fade-up" data-aos-delay="200">
+          {{ section.settings.heading }}
+        </h1>
+      {%- endif -%}
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="hero-banner__subheading" data-aos="fade-up" data-aos-delay="300">
+          {{ section.settings.subheading }}
+        </p>
+      {%- endif -%}
+
+      <div class="hero-banner__buttons" data-aos="fade-up" data-aos-delay="400">
+        {%- if section.settings.button1_text != blank -%}
+          <a
+            href="{{ section.settings.button1_link }}"
+            class="btn btn--primary btn--large"
+            {% if section.settings.button1_link == blank %}aria-disabled="true"{% endif %}
+          >
+            {{ section.settings.button1_text }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.button2_text != blank -%}
+          <a
+            href="{{ section.settings.button2_link }}"
+            class="btn btn--secondary btn--large"
+            {% if section.settings.button2_link == blank %}aria-disabled="true"{% endif %}
+          >
+            {{ section.settings.button2_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.show_scroll_indicator -%}
+      <div class="hero-banner__scroll-indicator" data-aos="fade-up" data-aos-delay="600" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bannière hero",
+  "tag": "section",
+  "class": "section-hero-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image d'arrière-plan"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "URL de la vidéo",
+      "info": "URL directe vers un fichier vidéo MP4. Remplace l'image si renseignée."
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "%",
+      "label": "Opacité du voile sombre"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Étiquette",
+      "default": "Artisan depuis 2010",
+      "info": "Petit badge affiché au-dessus du titre"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre principal",
+      "default": "Un savoir-faire d'exception"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Sous-titre",
+      "default": "Découvrez nos créations artisanales, fabriquées avec passion dans notre atelier français."
+    },
+    {
+      "type": "text",
+      "id": "button1_text",
+      "label": "Texte du bouton principal",
+      "default": "Découvrir"
+    },
+    {
+      "type": "url",
+      "id": "button1_link",
+      "label": "Lien du bouton principal"
+    },
+    {
+      "type": "text",
+      "id": "button2_text",
+      "label": "Texte du bouton secondaire",
+      "default": "Notre histoire"
+    },
+    {
+      "type": "url",
+      "id": "button2_link",
+      "label": "Lien du bouton secondaire"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "default": 80,
+      "unit": "vh",
+      "label": "Hauteur minimale"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alignement du texte",
+      "options": [
+        { "value": "left", "label": "Gauche" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Droite" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Schéma de couleurs",
+      "options": [
+        { "value": "light", "label": "Clair" },
+        { "value": "dark", "label": "Sombre" }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Afficher l'indicateur de défilement",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Espacement supérieur"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Espacement inférieur"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bannière hero"
+    }
+  ]
+}
+{% endschema %}

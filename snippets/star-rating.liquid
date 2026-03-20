@@ -1,0 +1,92 @@
+{% comment %}
+  Snippet: star-rating.liquid
+  Theme: Ancrage
+  Usage: {% render 'star-rating', rating: 4.5, count: 23 %}
+  Accepts:
+    - rating {Number} Rating value (0-5)
+    - count {Number} Number of reviews
+{% endcomment %}
+
+{%- liquid
+  assign rating_value = rating | default: 0 | times: 1.0
+  assign review_count = count | default: 0
+  assign rating_floor = rating_value | floor
+  assign rating_decimal = rating_value | minus: rating_floor
+  assign has_half = false
+  if rating_decimal >= 0.25 and rating_decimal < 0.75
+    assign has_half = true
+  endif
+  assign full_stars = rating_floor
+  if rating_decimal >= 0.75
+    assign full_stars = rating_floor | plus: 1
+  endif
+  if has_half
+    assign empty_stars = 5 | minus: full_stars | minus: 1
+  else
+    assign empty_stars = 5 | minus: full_stars
+  endif
+-%}
+
+<div class="star-rating" role="img" aria-label="Note : {{ rating_value }} sur 5{% if review_count > 0 %}, basée sur {{ review_count }} avis{% endif %}">
+  <div class="star-rating__stars" aria-hidden="true">
+    {%- for i in (1..full_stars) -%}
+      {% render 'icon', name: 'star' %}
+    {%- endfor -%}
+
+    {%- if has_half -%}
+      {% render 'icon', name: 'star-half' %}
+    {%- endif -%}
+
+    {%- for i in (1..empty_stars) -%}
+      {% render 'icon', name: 'star-empty' %}
+    {%- endfor -%}
+  </div>
+
+  {%- if rating_value > 0 or review_count > 0 -%}
+    <span class="star-rating__info">
+      {%- if rating_value > 0 -%}
+        <span class="star-rating__value">{{ rating_value }}</span>
+      {%- endif -%}
+      {%- if review_count > 0 -%}
+        <span class="star-rating__count">({{ review_count }})</span>
+      {%- endif -%}
+    </span>
+  {%- endif -%}
+</div>
+
+<style>
+  .star-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .star-rating__stars {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    color: #C4853A;
+  }
+
+  .star-rating__stars svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .star-rating__info {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.8125rem;
+    line-height: 1;
+  }
+
+  .star-rating__value {
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .star-rating__count {
+    color: #888;
+  }
+</style>

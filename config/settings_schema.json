@@ -1,0 +1,941 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Ancrage",
+    "theme_version": "1.0.0",
+    "theme_author": "Scale",
+    "theme_documentation_url": "https://scale.fr",
+    "theme_support_url": "https://scale.fr/support"
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Couleurs principales"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Couleur principale",
+        "default": "#1A1814",
+        "info": "Utilisée pour les boutons principaux et éléments d'action."
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Couleur secondaire",
+        "default": "#4A4640",
+        "info": "Utilisée pour les boutons secondaires et éléments d'appui."
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Couleur d'accent",
+        "default": "#C4853A",
+        "info": "Or chaud — utilisée pour les accents, liens et mises en valeur."
+      },
+      {
+        "type": "header",
+        "content": "Arrière-plans"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Arrière-plan principal",
+        "default": "#F7F5F0",
+        "info": "Fond crème du site."
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface / Cartes",
+        "default": "#FFFFFF",
+        "info": "Fond des cartes produit, modales et éléments en surélévation."
+      },
+      {
+        "type": "color",
+        "id": "color_surface_alt",
+        "label": "Surface alternative",
+        "default": "#EDEAE4",
+        "info": "Fond alternatif pour sections différenciées."
+      },
+      {
+        "type": "header",
+        "content": "Texte"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Texte principal",
+        "default": "#1A1814",
+        "info": "Couleur du texte courant."
+      },
+      {
+        "type": "color",
+        "id": "color_text_secondary",
+        "label": "Texte secondaire",
+        "default": "#6B6560",
+        "info": "Couleur du texte atténué (descriptions, méta)."
+      },
+      {
+        "type": "header",
+        "content": "Bordures et séparateurs"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Bordures",
+        "default": "#D4D0C8",
+        "info": "Couleur des bordures et séparateurs."
+      },
+      {
+        "type": "header",
+        "content": "États et retours"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Succès",
+        "default": "#2E7D32"
+      },
+      {
+        "type": "color",
+        "id": "color_error",
+        "label": "Erreur",
+        "default": "#C62828"
+      },
+      {
+        "type": "color",
+        "id": "color_warning",
+        "label": "Avertissement",
+        "default": "#E65100"
+      },
+      {
+        "type": "color",
+        "id": "color_info",
+        "label": "Information",
+        "default": "#1565C0"
+      }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Titres"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Police des titres",
+        "default": "dm_serif_display_n4",
+        "info": "DM Serif Display — police serif élégante pour les titres."
+      },
+      {
+        "type": "select",
+        "id": "font_heading_weight",
+        "label": "Graisse des titres",
+        "default": "400",
+        "options": [
+          { "value": "400", "label": "Normal (400)" },
+          { "value": "700", "label": "Gras (700)" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "font_heading_transform",
+        "label": "Transformation des titres",
+        "default": "none",
+        "options": [
+          { "value": "none", "label": "Aucune" },
+          { "value": "uppercase", "label": "MAJUSCULES" },
+          { "value": "capitalize", "label": "Première Lettre" },
+          { "value": "lowercase", "label": "minuscules" }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "font_heading_letter_spacing",
+        "label": "Espacement des lettres (titres)",
+        "default": 0,
+        "min": -50,
+        "max": 100,
+        "step": 10,
+        "unit": "ms"
+      },
+      {
+        "type": "header",
+        "content": "Corps de texte"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Police du corps",
+        "default": "dm_sans_n4",
+        "info": "DM Sans — police sans-serif lisible et moderne."
+      },
+      {
+        "type": "range",
+        "id": "font_body_size",
+        "label": "Taille de base (px)",
+        "default": 16,
+        "min": 14,
+        "max": 20,
+        "step": 1,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "font_body_weight",
+        "label": "Graisse du corps",
+        "default": "400",
+        "options": [
+          { "value": "300", "label": "Léger (300)" },
+          { "value": "400", "label": "Normal (400)" },
+          { "value": "500", "label": "Moyen (500)" }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "font_body_line_height",
+        "label": "Hauteur de ligne",
+        "default": 1.6,
+        "min": 1.2,
+        "max": 2.0,
+        "step": 0.1
+      },
+      {
+        "type": "header",
+        "content": "Échelle typographique"
+      },
+      {
+        "type": "select",
+        "id": "type_scale_ratio",
+        "label": "Ratio d'échelle typographique",
+        "default": "1.25",
+        "info": "Détermine la progression de taille entre les niveaux de titre.",
+        "options": [
+          { "value": "1.125", "label": "1.125 — Seconde majeure (compact)" },
+          { "value": "1.2", "label": "1.200 — Tierce mineure" },
+          { "value": "1.25", "label": "1.250 — Quarte juste (recommandé)" },
+          { "value": "1.333", "label": "1.333 — Quarte augmentée (aéré)" },
+          { "value": "1.5", "label": "1.500 — Quinte juste (dramatique)" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Mise en page",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Conteneur"
+      },
+      {
+        "type": "range",
+        "id": "layout_max_width",
+        "label": "Largeur maximale du site (px)",
+        "default": 1320,
+        "min": 1000,
+        "max": 1600,
+        "step": 20,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "layout_content_width",
+        "label": "Largeur du contenu texte (px)",
+        "default": 800,
+        "min": 600,
+        "max": 1000,
+        "step": 20,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Espacement"
+      },
+      {
+        "type": "range",
+        "id": "layout_grid_gap",
+        "label": "Gouttière de la grille (px)",
+        "default": 24,
+        "min": 8,
+        "max": 48,
+        "step": 4,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "layout_section_spacing",
+        "label": "Espacement entre sections (px)",
+        "default": 80,
+        "min": 40,
+        "max": 160,
+        "step": 8,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "layout_section_spacing_mobile",
+        "label": "Espacement entre sections — mobile (px)",
+        "default": 48,
+        "min": 24,
+        "max": 120,
+        "step": 8,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Coins arrondis"
+      },
+      {
+        "type": "range",
+        "id": "layout_border_radius",
+        "label": "Rayon de bordure global (px)",
+        "default": 8,
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "layout_button_radius",
+        "label": "Rayon des boutons (px)",
+        "default": 6,
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Ombres"
+      },
+      {
+        "type": "select",
+        "id": "layout_shadow_style",
+        "label": "Style d'ombres",
+        "default": "subtle",
+        "options": [
+          { "value": "none", "label": "Aucune" },
+          { "value": "subtle", "label": "Subtile" },
+          { "value": "medium", "label": "Moyenne" },
+          { "value": "strong", "label": "Prononcée" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Liens réseaux sociaux"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook",
+        "placeholder": "https://facebook.com/votre-page"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram",
+        "placeholder": "https://instagram.com/votre-compte"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok",
+        "placeholder": "https://tiktok.com/@votre-compte"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube",
+        "placeholder": "https://youtube.com/votre-chaine"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin",
+        "label": "LinkedIn",
+        "placeholder": "https://linkedin.com/company/votre-entreprise"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest",
+        "placeholder": "https://pinterest.fr/votre-compte"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "X (Twitter)",
+        "placeholder": "https://x.com/votre-compte"
+      },
+      {
+        "type": "header",
+        "content": "Contact"
+      },
+      {
+        "type": "text",
+        "id": "social_email",
+        "label": "Email de contact",
+        "placeholder": "contact@votre-boutique.fr"
+      },
+      {
+        "type": "text",
+        "id": "social_phone",
+        "label": "Téléphone",
+        "placeholder": "+33 1 23 45 67 89"
+      },
+      {
+        "type": "text",
+        "id": "social_whatsapp",
+        "label": "WhatsApp",
+        "placeholder": "+33612345678",
+        "info": "Numéro au format international sans espaces."
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Image carrée de 32x32px minimum, format PNG recommandé."
+      }
+    ]
+  },
+  {
+    "name": "SEO & Référencement",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Métadonnées par défaut"
+      },
+      {
+        "type": "textarea",
+        "id": "seo_meta_description",
+        "label": "Meta description par défaut",
+        "placeholder": "Décrivez votre boutique en 155 caractères maximum...",
+        "info": "Utilisée si aucune description spécifique n'est définie sur une page."
+      },
+      {
+        "type": "image_picker",
+        "id": "seo_og_image",
+        "label": "Image Open Graph par défaut",
+        "info": "Image affichée lors du partage sur les réseaux sociaux. Taille recommandée : 1200x630px."
+      },
+      {
+        "type": "text",
+        "id": "seo_og_title",
+        "label": "Titre Open Graph par défaut",
+        "placeholder": "Nom de votre boutique"
+      },
+      {
+        "type": "header",
+        "content": "SEO local (Schema.org)"
+      },
+      {
+        "type": "select",
+        "id": "seo_business_type",
+        "label": "Type d'entreprise (Schema.org)",
+        "default": "LocalBusiness",
+        "info": "Aide Google à comprendre votre activité pour le référencement local.",
+        "options": [
+          { "value": "LocalBusiness", "label": "Commerce local (générique)" },
+          { "value": "Store", "label": "Boutique / Magasin" },
+          { "value": "Restaurant", "label": "Restaurant" },
+          { "value": "Bakery", "label": "Boulangerie / Pâtisserie" },
+          { "value": "BarOrPub", "label": "Bar / Pub" },
+          { "value": "Florist", "label": "Fleuriste" },
+          { "value": "HairSalon", "label": "Salon de coiffure" },
+          { "value": "BeautySalon", "label": "Salon de beauté" },
+          { "value": "FurnitureStore", "label": "Magasin de meubles" },
+          { "value": "ClothingStore", "label": "Boutique de vêtements" },
+          { "value": "JewelryStore", "label": "Bijouterie" },
+          { "value": "ArtGallery", "label": "Galerie d'art" },
+          { "value": "Winery", "label": "Domaine viticole" },
+          { "value": "FoodEstablishment", "label": "Établissement alimentaire" },
+          { "value": "ProfessionalService", "label": "Service professionnel" },
+          { "value": "HomeAndConstructionBusiness", "label": "Bâtiment / Construction" },
+          { "value": "HealthAndBeautyBusiness", "label": "Santé / Bien-être" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "seo_business_name",
+        "label": "Nom de l'entreprise",
+        "placeholder": "Ma Boutique"
+      },
+      {
+        "type": "textarea",
+        "id": "seo_business_address",
+        "label": "Adresse postale",
+        "placeholder": "12 Rue de la Paix\n75002 Paris\nFrance"
+      },
+      {
+        "type": "text",
+        "id": "seo_business_region",
+        "label": "Région / Département",
+        "placeholder": "Île-de-France"
+      },
+      {
+        "type": "text",
+        "id": "seo_business_postal_code",
+        "label": "Code postal",
+        "placeholder": "75002"
+      },
+      {
+        "type": "text",
+        "id": "seo_business_country",
+        "label": "Pays",
+        "default": "FR"
+      },
+      {
+        "type": "text",
+        "id": "seo_business_phone",
+        "label": "Téléphone (pour Schema.org)",
+        "placeholder": "+33 1 23 45 67 89"
+      },
+      {
+        "type": "text",
+        "id": "seo_business_hours",
+        "label": "Horaires d'ouverture",
+        "placeholder": "Lu-Ve 9h-18h, Sa 10h-17h",
+        "info": "Affiché dans les résultats de recherche Google."
+      },
+      {
+        "type": "header",
+        "content": "Réglages avancés"
+      },
+      {
+        "type": "checkbox",
+        "id": "seo_json_ld_enabled",
+        "label": "Activer les données structurées JSON-LD",
+        "default": true,
+        "info": "Génère automatiquement le balisage Schema.org pour les produits, le fil d'Ariane, etc."
+      },
+      {
+        "type": "checkbox",
+        "id": "seo_breadcrumbs_enabled",
+        "label": "Afficher le fil d'Ariane",
+        "default": true,
+        "info": "Améliore la navigation et le référencement."
+      }
+    ]
+  },
+  {
+    "name": "Panier",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Type de panier"
+      },
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Type de panier",
+        "default": "drawer",
+        "options": [
+          { "value": "drawer", "label": "Tiroir latéral (recommandé)" },
+          { "value": "page", "label": "Page panier" },
+          { "value": "popup", "label": "Popup de confirmation" }
+        ],
+        "info": "Le tiroir latéral offre une meilleure expérience d'achat en gardant le client sur la page."
+      },
+      {
+        "type": "header",
+        "content": "Livraison gratuite"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_free_shipping_enabled",
+        "label": "Afficher la barre de livraison gratuite",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "cart_free_shipping_threshold",
+        "label": "Seuil de livraison gratuite (€)",
+        "default": 60,
+        "min": 0,
+        "max": 500,
+        "step": 5,
+        "unit": "€",
+        "info": "Montant minimum pour la livraison gratuite. 0 = désactivé."
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_message",
+        "label": "Message livraison gratuite",
+        "default": "Plus que {{ remaining }} € pour la livraison gratuite !",
+        "info": "Utilisez {{ remaining }} pour afficher le montant restant."
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_success",
+        "label": "Message livraison gratuite atteinte",
+        "default": "Félicitations ! Vous bénéficiez de la livraison gratuite."
+      },
+      {
+        "type": "header",
+        "content": "Options du panier"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_note_enabled",
+        "label": "Autoriser les notes de commande",
+        "default": true,
+        "info": "Permet au client d'ajouter un message à sa commande."
+      },
+      {
+        "type": "text",
+        "id": "cart_note_placeholder",
+        "label": "Placeholder de la note",
+        "default": "Instructions spéciales pour votre commande..."
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_terms_enabled",
+        "label": "Demander l'acceptation des CGV",
+        "default": true,
+        "info": "Obligatoire en France : le client doit accepter les CGV avant de passer commande."
+      },
+      {
+        "type": "url",
+        "id": "cart_terms_page",
+        "label": "Page des CGV"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_upsell_enabled",
+        "label": "Activer les suggestions dans le panier",
+        "default": true,
+        "info": "Propose des produits complémentaires dans le panier."
+      }
+    ]
+  },
+  {
+    "name": "Bandeau d'annonce",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "announcement_enabled",
+        "label": "Afficher le bandeau d'annonce",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Texte du bandeau",
+        "default": "Livraison gratuite dès 60€ d'achat"
+      },
+      {
+        "type": "url",
+        "id": "announcement_link",
+        "label": "Lien du bandeau"
+      },
+      {
+        "type": "color",
+        "id": "announcement_bg_color",
+        "label": "Couleur de fond",
+        "default": "#1A1814"
+      },
+      {
+        "type": "color",
+        "id": "announcement_text_color",
+        "label": "Couleur du texte",
+        "default": "#F7F5F0"
+      },
+      {
+        "type": "checkbox",
+        "id": "announcement_dismissible",
+        "label": "Peut être fermé par le visiteur",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "announcement_auto_rotate",
+        "label": "Rotation automatique (plusieurs annonces)",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "announcement_rotate_speed",
+        "label": "Vitesse de rotation (secondes)",
+        "default": 5,
+        "min": 3,
+        "max": 10,
+        "step": 1,
+        "unit": "s"
+      }
+    ]
+  },
+  {
+    "name": "Confiance & Conversion",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Badges de confiance"
+      },
+      {
+        "type": "checkbox",
+        "id": "trust_badges_enabled",
+        "label": "Afficher les badges de confiance",
+        "default": true,
+        "info": "Affiche des icônes de réassurance sur les pages produit et panier."
+      },
+      {
+        "type": "text",
+        "id": "trust_badge_1_text",
+        "label": "Badge 1 — Texte",
+        "default": "Paiement sécurisé"
+      },
+      {
+        "type": "select",
+        "id": "trust_badge_1_icon",
+        "label": "Badge 1 — Icône",
+        "default": "lock",
+        "options": [
+          { "value": "lock", "label": "Cadenas" },
+          { "value": "shield", "label": "Bouclier" },
+          { "value": "truck", "label": "Camion" },
+          { "value": "refresh", "label": "Retour" },
+          { "value": "star", "label": "Étoile" },
+          { "value": "heart", "label": "Coeur" },
+          { "value": "check", "label": "Validation" },
+          { "value": "leaf", "label": "Feuille" },
+          { "value": "france", "label": "Made in France" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "trust_badge_2_text",
+        "label": "Badge 2 — Texte",
+        "default": "Livraison rapide"
+      },
+      {
+        "type": "select",
+        "id": "trust_badge_2_icon",
+        "label": "Badge 2 — Icône",
+        "default": "truck",
+        "options": [
+          { "value": "lock", "label": "Cadenas" },
+          { "value": "shield", "label": "Bouclier" },
+          { "value": "truck", "label": "Camion" },
+          { "value": "refresh", "label": "Retour" },
+          { "value": "star", "label": "Étoile" },
+          { "value": "heart", "label": "Coeur" },
+          { "value": "check", "label": "Validation" },
+          { "value": "leaf", "label": "Feuille" },
+          { "value": "france", "label": "Made in France" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "trust_badge_3_text",
+        "label": "Badge 3 — Texte",
+        "default": "Satisfait ou remboursé"
+      },
+      {
+        "type": "select",
+        "id": "trust_badge_3_icon",
+        "label": "Badge 3 — Icône",
+        "default": "refresh",
+        "options": [
+          { "value": "lock", "label": "Cadenas" },
+          { "value": "shield", "label": "Bouclier" },
+          { "value": "truck", "label": "Camion" },
+          { "value": "refresh", "label": "Retour" },
+          { "value": "star", "label": "Étoile" },
+          { "value": "heart", "label": "Coeur" },
+          { "value": "check", "label": "Validation" },
+          { "value": "leaf", "label": "Feuille" },
+          { "value": "france", "label": "Made in France" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "trust_badge_4_text",
+        "label": "Badge 4 — Texte",
+        "default": "Fabrication artisanale"
+      },
+      {
+        "type": "select",
+        "id": "trust_badge_4_icon",
+        "label": "Badge 4 — Icône",
+        "default": "france",
+        "options": [
+          { "value": "lock", "label": "Cadenas" },
+          { "value": "shield", "label": "Bouclier" },
+          { "value": "truck", "label": "Camion" },
+          { "value": "refresh", "label": "Retour" },
+          { "value": "star", "label": "Étoile" },
+          { "value": "heart", "label": "Coeur" },
+          { "value": "check", "label": "Validation" },
+          { "value": "leaf", "label": "Feuille" },
+          { "value": "france", "label": "Made in France" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Urgence & Rareté"
+      },
+      {
+        "type": "checkbox",
+        "id": "urgency_stock_low_enabled",
+        "label": "Afficher l'alerte stock faible",
+        "default": true,
+        "info": "Affiche 'Plus que X en stock' lorsque le stock est bas."
+      },
+      {
+        "type": "range",
+        "id": "urgency_stock_low_threshold",
+        "label": "Seuil de stock faible",
+        "default": 5,
+        "min": 1,
+        "max": 20,
+        "step": 1
+      },
+      {
+        "type": "checkbox",
+        "id": "urgency_countdown_enabled",
+        "label": "Activer les comptes à rebours promotionnels",
+        "default": false,
+        "info": "Affiche un décompte sur les produits en promotion."
+      },
+      {
+        "type": "header",
+        "content": "Preuve sociale"
+      },
+      {
+        "type": "checkbox",
+        "id": "social_proof_reviews_enabled",
+        "label": "Afficher les avis clients",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "social_proof_sold_count",
+        "label": "Afficher le nombre de ventes",
+        "default": false,
+        "info": "Affiche 'X personnes ont acheté ce produit'."
+      },
+      {
+        "type": "checkbox",
+        "id": "social_proof_visitors",
+        "label": "Afficher les visiteurs en temps réel",
+        "default": false,
+        "info": "Affiche 'X personnes consultent ce produit'."
+      }
+    ]
+  },
+  {
+    "name": "RGPD & Cookies",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Bandeau cookies"
+      },
+      {
+        "type": "checkbox",
+        "id": "cookie_banner_enabled",
+        "label": "Afficher le bandeau cookies",
+        "default": true,
+        "info": "Obligatoire en France et dans l'UE (RGPD / ePrivacy)."
+      },
+      {
+        "type": "select",
+        "id": "cookie_banner_position",
+        "label": "Position du bandeau",
+        "default": "bottom",
+        "options": [
+          { "value": "bottom", "label": "Bas de page" },
+          { "value": "bottom-left", "label": "Bas gauche (mini)" },
+          { "value": "bottom-right", "label": "Bas droite (mini)" },
+          { "value": "center", "label": "Centre (modale)" }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "cookie_banner_message",
+        "label": "Message du bandeau",
+        "default": "Nous utilisons des cookies pour améliorer votre expérience. En poursuivant votre navigation, vous acceptez notre politique de cookies."
+      },
+      {
+        "type": "text",
+        "id": "cookie_banner_accept",
+        "label": "Texte du bouton accepter",
+        "default": "Accepter"
+      },
+      {
+        "type": "text",
+        "id": "cookie_banner_decline",
+        "label": "Texte du bouton refuser",
+        "default": "Refuser"
+      },
+      {
+        "type": "text",
+        "id": "cookie_banner_customize",
+        "label": "Texte du bouton personnaliser",
+        "default": "Personnaliser"
+      },
+      {
+        "type": "url",
+        "id": "cookie_policy_page",
+        "label": "Page politique de cookies"
+      },
+      {
+        "type": "url",
+        "id": "privacy_policy_page",
+        "label": "Page politique de confidentialité"
+      },
+      {
+        "type": "header",
+        "content": "Catégories de cookies"
+      },
+      {
+        "type": "checkbox",
+        "id": "cookie_analytics_default",
+        "label": "Cookies analytiques activés par défaut",
+        "default": false,
+        "info": "Doit être désactivé par défaut pour être conforme au RGPD."
+      },
+      {
+        "type": "checkbox",
+        "id": "cookie_marketing_default",
+        "label": "Cookies marketing activés par défaut",
+        "default": false,
+        "info": "Doit être désactivé par défaut pour être conforme au RGPD."
+      }
+    ]
+  },
+  {
+    "name": "CSS personnalisé",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "custom_css",
+        "label": "CSS personnalisé",
+        "info": "Ajoutez du CSS personnalisé qui sera appliqué sur toutes les pages du site. Pas besoin de balises <style>.",
+        "placeholder": "/* Vos styles personnalisés ici */\n.mon-element {\n  color: red;\n}"
+      },
+      {
+        "type": "textarea",
+        "id": "custom_css_mobile",
+        "label": "CSS personnalisé — Mobile uniquement",
+        "info": "CSS appliqué uniquement sur les écrans de moins de 768px.",
+        "placeholder": "/* Styles mobiles */\n.mon-element {\n  font-size: 14px;\n}"
+      }
+    ]
+  }
+]

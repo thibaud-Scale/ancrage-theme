@@ -1,0 +1,364 @@
+<section class="main-customers-order section-padding" data-section-id="{{ section.id }}" aria-label="Détails de commande">
+  <div class="container">
+    <div class="order-page">
+      <header class="order-header">
+        <a href="{{ routes.account_url }}" class="order-back text-sm">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Retour à mon compte
+        </a>
+        <h1 class="order-header__title h2">Commande {{ order.name }}</h1>
+        <div class="order-header__meta text-sm text-muted">
+          <time datetime="{{ order.created_at | date: '%Y-%m-%d' }}">
+            Passée le {{ order.created_at | date: '%e %B %Y à %H:%M' }}
+          </time>
+          <span class="order-status order-status--{{ order.financial_status }}">
+            {{ order.financial_status_label }}
+          </span>
+          {%- if order.fulfillment_status -%}
+            <span class="order-status order-status--fulfillment">
+              {{ order.fulfillment_status_label }}
+            </span>
+          {%- endif -%}
+        </div>
+      </header>
+
+      <div class="order-layout">
+        {%- comment -%} Line Items {%- endcomment -%}
+        <div class="order-items">
+          <h2 class="order-section-title h5">Articles commandés</h2>
+          <div class="order-items-table">
+            <div class="order-items-table__header">
+              <span>Produit</span>
+              <span>Prix</span>
+              <span>Quantité</span>
+              <span>Total</span>
+            </div>
+
+            {%- for line_item in order.line_items -%}
+              <div class="order-line-item">
+                <div class="order-line-item__info">
+                  {%- if line_item.image -%}
+                    <div class="order-line-item__image">
+                      <img
+                        src="{{ line_item.image | image_url: width: 120 }}"
+                        alt="{{ line_item.image.alt | escape | default: line_item.title }}"
+                        width="60"
+                        height="60"
+                        loading="lazy"
+                      >
+                    </div>
+                  {%- endif -%}
+                  <div>
+                    <p class="order-line-item__title text-bold">
+                      {%- if line_item.url != blank -%}
+                        <a href="{{ line_item.url }}">{{ line_item.title }}</a>
+                      {%- else -%}
+                        {{ line_item.title }}
+                      {%- endif -%}
+                    </p>
+                    {%- unless line_item.variant.title == 'Default Title' -%}
+                      <p class="order-line-item__variant text-sm text-muted">{{ line_item.variant.title }}</p>
+                    {%- endunless -%}
+                    {%- if line_item.sku != blank -%}
+                      <p class="order-line-item__sku text-xs text-muted">SKU: {{ line_item.sku }}</p>
+                    {%- endif -%}
+                    {%- if line_item.fulfillment -%}
+                      <p class="order-line-item__fulfillment text-xs text-muted">
+                        {{ line_item.fulfillment.tracking_company }}
+                        {%- if line_item.fulfillment.tracking_url -%}
+                          — <a href="{{ line_item.fulfillment.tracking_url }}" target="_blank" rel="noopener">Suivre le colis</a>
+                        {%- endif -%}
+                      </p>
+                    {%- endif -%}
+                  </div>
+                </div>
+                <div class="order-line-item__price text-sm">{{ line_item.original_price | money }}</div>
+                <div class="order-line-item__qty text-sm">{{ line_item.quantity }}</div>
+                <div class="order-line-item__total text-sm text-bold">{{ line_item.final_line_price | money }}</div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          {%- comment -%} Order Totals {%- endcomment -%}
+          <div class="order-totals">
+            <div class="order-totals__row">
+              <span>Sous-total</span>
+              <span>{{ order.line_items_subtotal_price | money }}</span>
+            </div>
+
+            {%- for discount in order.discount_applications -%}
+              <div class="order-totals__row order-totals__row--discount">
+                <span>Réduction ({{ discount.title }})</span>
+                <span>-{{ discount.total_allocated_amount | money }}</span>
+              </div>
+            {%- endfor -%}
+
+            {%- for shipping_method in order.shipping_methods -%}
+              <div class="order-totals__row">
+                <span>Livraison ({{ shipping_method.title }})</span>
+                <span>{{ shipping_method.price | money }}</span>
+              </div>
+            {%- endfor -%}
+
+            {%- for tax_line in order.tax_lines -%}
+              <div class="order-totals__row">
+                <span>{{ tax_line.title }} ({{ tax_line.rate | times: 100 }}%)</span>
+                <span>{{ tax_line.price | money }}</span>
+              </div>
+            {%- endfor -%}
+
+            <div class="order-totals__row order-totals__row--total">
+              <span class="text-bold">Total</span>
+              <span class="text-bold">{{ order.total_price | money_with_currency }}</span>
+            </div>
+          </div>
+        </div>
+
+        {%- comment -%} Addresses {%- endcomment -%}
+        <div class="order-addresses">
+          {%- if order.shipping_address -%}
+            <div class="order-address-card">
+              <h3 class="order-address-card__title h6">Adresse de livraison</h3>
+              <address class="order-address text-sm">
+                <p>{{ order.shipping_address.name }}</p>
+                {%- if order.shipping_address.company != blank -%}
+                  <p>{{ order.shipping_address.company }}</p>
+                {%- endif -%}
+                <p>{{ order.shipping_address.address1 }}</p>
+                {%- if order.shipping_address.address2 != blank -%}
+                  <p>{{ order.shipping_address.address2 }}</p>
+                {%- endif -%}
+                <p>{{ order.shipping_address.zip }} {{ order.shipping_address.city }}</p>
+                <p>{{ order.shipping_address.country }}</p>
+                {%- if order.shipping_address.phone != blank -%}
+                  <p>{{ order.shipping_address.phone }}</p>
+                {%- endif -%}
+              </address>
+            </div>
+          {%- endif -%}
+
+          {%- if order.billing_address -%}
+            <div class="order-address-card">
+              <h3 class="order-address-card__title h6">Adresse de facturation</h3>
+              <address class="order-address text-sm">
+                <p>{{ order.billing_address.name }}</p>
+                {%- if order.billing_address.company != blank -%}
+                  <p>{{ order.billing_address.company }}</p>
+                {%- endif -%}
+                <p>{{ order.billing_address.address1 }}</p>
+                {%- if order.billing_address.address2 != blank -%}
+                  <p>{{ order.billing_address.address2 }}</p>
+                {%- endif -%}
+                <p>{{ order.billing_address.zip }} {{ order.billing_address.city }}</p>
+                <p>{{ order.billing_address.country }}</p>
+                {%- if order.billing_address.phone != blank -%}
+                  <p>{{ order.billing_address.phone }}</p>
+                {%- endif -%}
+              </address>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .order-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-text-muted, #888);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: color 0.2s;
+  }
+
+  .order-back:hover { color: var(--color-text, #2c2c2c); }
+
+  .order-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border, #eee);
+  }
+
+  .order-header__title {
+    font-family: var(--font-heading);
+    color: var(--color-text, #2c2c2c);
+    margin: 0 0 0.5rem;
+  }
+
+  .order-header__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .order-status {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full, 50px);
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: var(--color-surface-subtle, #f0ede8);
+    color: var(--color-text-muted, #666);
+  }
+
+  .order-status--paid { background: #e8f5e9; color: #2e7d32; }
+  .order-status--pending { background: #fff3e0; color: #e65100; }
+  .order-status--refunded { background: #fce4ec; color: #c62828; }
+
+  .order-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 992px) {
+    .order-layout {
+      grid-template-columns: 1fr 300px;
+      gap: 3rem;
+      align-items: start;
+    }
+  }
+
+  .order-section-title {
+    font-family: var(--font-heading);
+    margin: 0 0 1rem;
+  }
+
+  .order-items-table__header {
+    display: none;
+    padding: 0.75rem 0;
+    border-bottom: 2px solid var(--color-border, #eee);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted, #888);
+  }
+
+  @media (min-width: 768px) {
+    .order-items-table__header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 80px 1fr;
+      gap: 1rem;
+    }
+  }
+
+  .order-line-item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border, #eee);
+  }
+
+  @media (min-width: 768px) {
+    .order-line-item {
+      grid-template-columns: 2fr 1fr 80px 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+  }
+
+  .order-line-item__info {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .order-line-item__image {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+    background: var(--color-surface-subtle, #f8f7f5);
+  }
+
+  .order-line-item__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .order-line-item__title {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .order-line-item__title a {
+    color: var(--color-text, #2c2c2c);
+    text-decoration: none;
+  }
+
+  .order-line-item__title a:hover { text-decoration: underline; }
+  .order-line-item__variant,
+  .order-line-item__sku,
+  .order-line-item__fulfillment { margin: 0.125rem 0 0; }
+  .order-line-item__fulfillment a { color: var(--color-accent, #c45e3a); }
+
+  @media (max-width: 767px) {
+    .order-line-item__price::before { content: 'Prix : '; font-weight: 400; }
+    .order-line-item__qty::before { content: 'Qté : '; font-weight: 400; }
+    .order-line-item__total::before { content: 'Total : '; font-weight: 400; }
+  }
+
+  .order-totals {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border, #eee);
+  }
+
+  .order-totals__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.375rem 0;
+    font-size: 0.875rem;
+  }
+
+  .order-totals__row--discount { color: var(--color-success, #4caf50); }
+
+  .order-totals__row--total {
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 2px solid var(--color-border, #eee);
+    font-size: 1rem;
+  }
+
+  .order-addresses {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .order-address-card {
+    background: var(--color-surface-subtle, #faf9f7);
+    padding: 1.25rem;
+    border-radius: var(--radius-lg, 12px);
+  }
+
+  .order-address-card__title {
+    font-family: var(--font-heading);
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border, #eee);
+  }
+
+  .order-address {
+    font-style: normal;
+    line-height: 1.6;
+  }
+
+  .order-address p { margin: 0; }
+</style>
+
+{% schema %}
+{
+  "name": "Détails de commande",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,172 @@
+{% comment %}
+  Snippet: breadcrumb.liquid
+  Theme: Ancrage
+  Usage: {% render 'breadcrumb' %}
+  Semantic breadcrumb navigation with Schema.org markup.
+{% endcomment %}
+
+{%- unless template == 'index' or template == 'cart' -%}
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="/" class="breadcrumb__link" itemprop="item">
+        <span itemprop="name">Accueil</span>
+      </a>
+      <meta itemprop="position" content="1">
+    </li>
+
+    {%- if template contains 'product' -%}
+      {%- if product.collections.size > 0 -%}
+        {%- assign primary_collection = product.collections.first -%}
+        <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span class="breadcrumb__separator" aria-hidden="true">
+            {% render 'icon', name: 'chevron-right' %}
+          </span>
+          <a href="{{ primary_collection.url }}" class="breadcrumb__link" itemprop="item">
+            <span itemprop="name">{{ primary_collection.title }}</span>
+          </a>
+          <meta itemprop="position" content="2">
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span class="breadcrumb__separator" aria-hidden="true">
+            {% render 'icon', name: 'chevron-right' %}
+          </span>
+          <span class="breadcrumb__current" itemprop="name" aria-current="page">{{ product.title }}</span>
+          <meta itemprop="item" content="{{ shop.url }}{{ product.url }}">
+          <meta itemprop="position" content="3">
+        </li>
+      {%- else -%}
+        <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span class="breadcrumb__separator" aria-hidden="true">
+            {% render 'icon', name: 'chevron-right' %}
+          </span>
+          <span class="breadcrumb__current" itemprop="name" aria-current="page">{{ product.title }}</span>
+          <meta itemprop="item" content="{{ shop.url }}{{ product.url }}">
+          <meta itemprop="position" content="2">
+        </li>
+      {%- endif -%}
+
+    {%- elsif template contains 'collection' -%}
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="breadcrumb__separator" aria-hidden="true">
+          {% render 'icon', name: 'chevron-right' %}
+        </span>
+        <span class="breadcrumb__current" itemprop="name" aria-current="page">{{ collection.title }}</span>
+        <meta itemprop="item" content="{{ shop.url }}{{ collection.url }}">
+        <meta itemprop="position" content="2">
+      </li>
+
+    {%- elsif template contains 'article' -%}
+      {%- if blog -%}
+        <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span class="breadcrumb__separator" aria-hidden="true">
+            {% render 'icon', name: 'chevron-right' %}
+          </span>
+          <a href="{{ blog.url }}" class="breadcrumb__link" itemprop="item">
+            <span itemprop="name">{{ blog.title }}</span>
+          </a>
+          <meta itemprop="position" content="2">
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span class="breadcrumb__separator" aria-hidden="true">
+            {% render 'icon', name: 'chevron-right' %}
+          </span>
+          <span class="breadcrumb__current" itemprop="name" aria-current="page">{{ article.title }}</span>
+          <meta itemprop="item" content="{{ shop.url }}{{ article.url }}">
+          <meta itemprop="position" content="3">
+        </li>
+      {%- endif -%}
+
+    {%- elsif template == 'blog' -%}
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="breadcrumb__separator" aria-hidden="true">
+          {% render 'icon', name: 'chevron-right' %}
+        </span>
+        <span class="breadcrumb__current" itemprop="name" aria-current="page">{{ blog.title }}</span>
+        <meta itemprop="item" content="{{ shop.url }}{{ blog.url }}">
+        <meta itemprop="position" content="2">
+      </li>
+
+    {%- elsif template == 'page' -%}
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="breadcrumb__separator" aria-hidden="true">
+          {% render 'icon', name: 'chevron-right' %}
+        </span>
+        <span class="breadcrumb__current" itemprop="name" aria-current="page">{{ page.title }}</span>
+        <meta itemprop="item" content="{{ shop.url }}{{ page.url }}">
+        <meta itemprop="position" content="2">
+      </li>
+
+    {%- elsif template == 'search' -%}
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="breadcrumb__separator" aria-hidden="true">
+          {% render 'icon', name: 'chevron-right' %}
+        </span>
+        <span class="breadcrumb__current" itemprop="name" aria-current="page">Recherche</span>
+        <meta itemprop="item" content="{{ shop.url }}/search">
+        <meta itemprop="position" content="2">
+      </li>
+
+    {%- elsif template == '404' -%}
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="breadcrumb__separator" aria-hidden="true">
+          {% render 'icon', name: 'chevron-right' %}
+        </span>
+        <span class="breadcrumb__current" itemprop="name" aria-current="page">Page introuvable</span>
+        <meta itemprop="item" content="{{ shop.url }}/404">
+        <meta itemprop="position" content="2">
+      </li>
+    {%- endif -%}
+  </ol>
+</nav>
+{%- endunless -%}
+
+<style>
+  .breadcrumb {
+    padding: 12px 0;
+  }
+
+  .breadcrumb__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .breadcrumb__item {
+    display: flex;
+    align-items: center;
+    font-size: 0.8125rem;
+    line-height: 1;
+  }
+
+  .breadcrumb__separator {
+    display: flex;
+    align-items: center;
+    margin: 0 6px;
+    color: #ccc;
+  }
+
+  .breadcrumb__separator svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .breadcrumb__link {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .breadcrumb__link:hover {
+    color: #C4853A;
+  }
+
+  .breadcrumb__current {
+    color: #1a1a1a;
+    font-weight: 500;
+  }
+</style>

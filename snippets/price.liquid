@@ -1,0 +1,142 @@
+{% comment %}
+  Snippet: price.liquid
+  Theme: Ancrage
+  Usage: {% render 'price', product: product %}
+  Accepts:
+    - product {Object} Shopify product object
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign price = current_variant.price
+  assign compare_at_price = current_variant.compare_at_price
+  assign price_varies = false
+  if product.price_varies
+    assign price_varies = true
+  endif
+  assign on_sale = false
+  if compare_at_price > price
+    assign on_sale = true
+  endif
+-%}
+
+<div class="price{% if on_sale %} price--on-sale{% endif %}{% unless product.available %} price--sold-out{% endunless %}" data-price>
+  {%- if price_varies -%}
+    <span class="price__range">
+      <span class="visually-hidden">Prix à partir de</span>
+      <span class="price__label">À partir de</span>
+      <span class="price__current">{{ product.price_min | money }}</span>
+    </span>
+  {%- else -%}
+    <span class="price__regular">
+      {%- if on_sale -%}
+        <span class="visually-hidden">Prix soldé</span>
+        <span class="price__current price__current--sale">{{ price | money }}</span>
+        <span class="visually-hidden">Prix original</span>
+        <s class="price__compare">{{ compare_at_price | money }}</s>
+        {%- assign discount = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round -%}
+        <span class="price__badge" aria-label="{{ discount }}% de réduction">-{{ discount }}%</span>
+      {%- else -%}
+        <span class="visually-hidden">Prix</span>
+        <span class="price__current">{{ price | money }}</span>
+      {%- endif -%}
+    </span>
+  {%- endif -%}
+
+  {%- if current_variant.unit_price_measurement -%}
+    <span class="price__unit">
+      <span class="visually-hidden">Prix unitaire</span>
+      {{ current_variant.unit_price | money }}
+      <span class="price__unit-separator">/</span>
+      {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+        {{ current_variant.unit_price_measurement.reference_value }}
+      {%- endif -%}
+      {{ current_variant.unit_price_measurement.reference_unit }}
+    </span>
+  {%- endif -%}
+</div>
+
+<style>
+  .price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+    line-height: 1;
+  }
+
+  .price__label {
+    font-size: 0.8125rem;
+    color: #888;
+    font-weight: 400;
+  }
+
+  .price__current {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .price__current--sale {
+    color: #C4853A;
+  }
+
+  .price__compare {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #aaa;
+    text-decoration: line-through;
+  }
+
+  .price__badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    background-color: #C4853A;
+    color: #fff;
+    border-radius: 3px;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+  }
+
+  .price__regular {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .price__range {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .price__unit {
+    display: block;
+    width: 100%;
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  .price__unit-separator {
+    margin: 0 1px;
+  }
+
+  .price--sold-out .price__current {
+    color: #aaa;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

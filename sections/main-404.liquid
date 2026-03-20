@@ -1,0 +1,174 @@
+<section class="main-404 section-padding" data-section-id="{{ section.id }}" aria-label="Page introuvable">
+  <div class="container">
+    <div class="error-page text-center">
+      <span class="error-page__code" aria-hidden="true">404</span>
+      <h1 class="error-page__title h2">{{ section.settings.heading }}</h1>
+      <p class="error-page__text text-muted">{{ section.settings.text }}</p>
+
+      {%- if section.settings.show_search -%}
+        <form action="{{ routes.search_url }}" method="get" role="search" class="error-page__search">
+          <label for="search-404" class="sr-only">Rechercher</label>
+          <div class="search-form__field">
+            <input
+              type="search"
+              id="search-404"
+              name="q"
+              placeholder="Rechercher sur le site..."
+              class="search-form__input"
+              autocomplete="off"
+            >
+            <button type="submit" class="search-form__submit btn-icon" aria-label="Rechercher">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </form>
+      {%- endif -%}
+
+      <a href="{{ routes.root_url }}" class="btn btn--primary btn--large error-page__cta">
+        Retour à l'accueil
+      </a>
+
+      {%- if section.settings.collection != blank -%}
+        {%- assign featured_collection = section.settings.collection -%}
+        <div class="error-page__featured">
+          <h2 class="error-page__featured-title h4">Nos produits populaires</h2>
+          <div class="product-grid product-grid--4">
+            {%- for product in featured_collection.products limit: 4 -%}
+              <div class="product-grid__item">
+                {% render 'product-card', product: product %}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .error-page {
+    padding: 3rem 0;
+  }
+
+  .error-page__code {
+    display: block;
+    font-size: clamp(5rem, 15vw, 10rem);
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-surface-subtle, #f0ede8);
+    font-family: var(--font-heading);
+    margin-bottom: 1rem;
+    letter-spacing: -0.05em;
+  }
+
+  .error-page__title {
+    font-family: var(--font-heading);
+    color: var(--color-text, #2c2c2c);
+    margin-bottom: 0.75rem;
+  }
+
+  .error-page__text {
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .error-page__search {
+    max-width: 440px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .error-page__search .search-form__field {
+    display: flex;
+    border: 2px solid var(--color-border, #ddd);
+    border-radius: var(--radius-lg, 12px);
+    overflow: hidden;
+    transition: border-color 0.2s;
+    background: var(--color-background, #fff);
+  }
+
+  .error-page__search .search-form__field:focus-within {
+    border-color: var(--color-primary, #2c2c2c);
+  }
+
+  .error-page__search .search-form__input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    font-size: 0.938rem;
+    background: transparent;
+    font-family: inherit;
+  }
+
+  .error-page__search .search-form__input:focus { outline: none; }
+
+  .error-page__search .search-form__submit {
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted, #888);
+  }
+
+  .error-page__cta {
+    margin-bottom: 3rem;
+  }
+
+  .error-page__featured {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-border, #eee);
+    text-align: left;
+  }
+
+  .error-page__featured-title {
+    text-align: center;
+    font-family: var(--font-heading);
+    margin-bottom: 1.5rem;
+  }
+
+  .error-page__featured .product-grid--4 {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    .error-page__featured .product-grid--4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Page 404",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Page introuvable"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Message",
+      "default": "Désolé, la page que vous recherchez n'existe pas ou a été déplacée. Utilisez la barre de recherche ou retournez à l'accueil."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Afficher la barre de recherche",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection à mettre en avant"
+    }
+  ]
+}
+{% endschema %}
