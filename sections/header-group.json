@@ -1,15 +1,39 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "En-tête",
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
-      "settings": {}
+      "settings": {
+        "bg_color": "#c4853a",
+        "text_color": "#ffffff",
+        "auto_rotate": true,
+        "rotation_speed": 5
+      }
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "logo_width": 130,
+        "menu": "main-menu",
+        "sticky_header": true,
+        "transparent_header": false,
+        "header_bg_color": "#ffffff",
+        "header_text_color": "#2c2c2c"
+      }
     }
   },
-  "order": ["announcement-bar", "header"]
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
 }
