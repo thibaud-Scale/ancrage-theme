@@ -34,11 +34,57 @@
     "1774019339a8225db8": {
       "type": "_blocks",
       "settings": {}
+    },
+    "testimonials_pFFwap": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_gPppL3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Un savoir-faire exceptionnel ! Les finitions sont parfaites et le produit a dépassé toutes mes attentes. Je suis cliente fidèle depuis 3 ans.",
+            "author": "Marie Dupont",
+            "role": "Gérante d'une boutique déco, Lyon",
+            "rating": 5
+          }
+        },
+        "testimonial_A767jU": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Livraison rapide et produit conforme à la description. L'équipe est très réactive et le service après-vente est au top. Bravo !",
+            "author": "Jean-Pierre Martin",
+            "role": "Artisan menuisier, Bordeaux",
+            "rating": 5
+          }
+        },
+        "testimonial_6gdTWU": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "J'ai offert leurs créations à mes clients les plus fidèles. Résultat : tout le monde est enchanté. Qualité française, on ne s'y trompe pas.",
+            "author": "Sophie Lefèvre",
+            "role": "Fleuriste, Nantes",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_gPppL3",
+        "testimonial_A767jU",
+        "testimonial_6gdTWU"
+      ],
+      "name": "Témoignages",
+      "settings": {
+        "heading": "Ce que disent nos clients",
+        "subtitle": "Des avis authentiques de nos clients satisfaits",
+        "layout": "grid",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
     }
   },
   "order": [
     "announcement-bar",
     "header",
-    "1774019339a8225db8"
+    "1774019339a8225db8",
+    "testimonials_pFFwap"
   ]
 }
