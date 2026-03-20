@@ -1,6 +1,596 @@
+{% doc %}
+  @prompt
+    Un calendrier vertical interactif qui se met en surbrillance au fur et à mesure que l'utilisateur fait défiler la page
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-scroll-calendar-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: 40px 0;
+  }
+
+  .ai-scroll-calendar-container-{{ ai_gen_id }} {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  .ai-scroll-calendar-timeline-{{ ai_gen_id }} {
+    position: sticky;
+    top: 100px;
+    width: 300px;
+    flex-shrink: 0;
+  }
+
+  .ai-scroll-calendar-event-{{ ai_gen_id }} {
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    border-left: 4px solid {{ block.settings.inactive_border_color }};
+    background-color: {{ block.settings.inactive_bg_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .ai-scroll-calendar-event-{{ ai_gen_id }}.active {
+    border-left-color: {{ block.settings.active_border_color }};
+    background-color: {{ block.settings.active_bg_color }};
+    transform: translateX(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-scroll-calendar-event-date-{{ ai_gen_id }} {
+    font-size: {{ block.settings.date_font_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.date_color }};
+    margin-bottom: 4px;
+  }
+
+  .ai-scroll-calendar-event-{{ ai_gen_id }}.active .ai-scroll-calendar-event-date-{{ ai_gen_id }} {
+    color: {{ block.settings.active_date_color }};
+  }
+
+  .ai-scroll-calendar-event-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_font_size }}px;
+    color: {{ block.settings.title_color }};
+    font-weight: 500;
+  }
+
+  .ai-scroll-calendar-event-{{ ai_gen_id }}.active .ai-scroll-calendar-event-title-{{ ai_gen_id }} {
+    color: {{ block.settings.active_title_color }};
+  }
+
+  .ai-scroll-calendar-content-{{ ai_gen_id }} {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ai-scroll-calendar-section-{{ ai_gen_id }} {
+    min-height: 400px;
+    padding: 60px 40px;
+    margin-bottom: 40px;
+    background-color: {{ block.settings.section_bg_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-scroll-calendar-section-{{ ai_gen_id }}.active {
+    opacity: 1;
+  }
+
+  .ai-scroll-calendar-section-date-{{ ai_gen_id }} {
+    font-size: {{ block.settings.section_date_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.section_date_color }};
+    margin-bottom: 16px;
+  }
+
+  .ai-scroll-calendar-section-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.section_title_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.section_title_color }};
+    margin-bottom: 20px;
+  }
+
+  .ai-scroll-calendar-section-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.section_description_size }}px;
+    line-height: 1.6;
+    color: {{ block.settings.section_description_color }};
+  }
+
+  .ai-scroll-calendar-section-image-{{ ai_gen_id }} {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 24px;
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+  }
+
+  .ai-scroll-calendar-section-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-scroll-calendar-container-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .ai-scroll-calendar-timeline-{{ ai_gen_id }} {
+      position: relative;
+      top: 0;
+      width: 100%;
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+      padding-bottom: 12px;
+    }
+
+    .ai-scroll-calendar-event-{{ ai_gen_id }} {
+      min-width: 200px;
+      margin-bottom: 0;
+    }
+
+    .ai-scroll-calendar-section-{{ ai_gen_id }} {
+      padding: 40px 20px;
+      min-height: 300px;
+    }
+  }
+{% endstyle %}
+
+<scroll-calendar-{{ ai_gen_id }} class="ai-scroll-calendar-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-scroll-calendar-container-{{ ai_gen_id }}">
+    <div class="ai-scroll-calendar-timeline-{{ ai_gen_id }}">
+      {% for i in (1..5) %}
+        {% liquid
+          assign date_key = 'event_' | append: i | append: '_date'
+          assign title_key = 'event_' | append: i | append: '_title'
+          assign event_date = block.settings[date_key]
+          assign event_title = block.settings[title_key]
+        %}
+        {% if event_date != blank and event_title != blank %}
+          <div class="ai-scroll-calendar-event-{{ ai_gen_id }}" data-event-index="{{ i }}">
+            <div class="ai-scroll-calendar-event-date-{{ ai_gen_id }}">{{ event_date }}</div>
+            <div class="ai-scroll-calendar-event-title-{{ ai_gen_id }}">{{ event_title }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-scroll-calendar-content-{{ ai_gen_id }}">
+      {% for i in (1..5) %}
+        {% liquid
+          assign date_key = 'event_' | append: i | append: '_date'
+          assign title_key = 'event_' | append: i | append: '_title'
+          assign description_key = 'event_' | append: i | append: '_description'
+          assign image_key = 'event_' | append: i | append: '_image'
+          
+          assign event_date = block.settings[date_key]
+          assign event_title = block.settings[title_key]
+          assign event_description = block.settings[description_key]
+          assign event_image = block.settings[image_key]
+        %}
+        {% if event_date != blank and event_title != blank %}
+          <div class="ai-scroll-calendar-section-{{ ai_gen_id }}" data-section-index="{{ i }}">
+            <div class="ai-scroll-calendar-section-date-{{ ai_gen_id }}">{{ event_date }}</div>
+            <div class="ai-scroll-calendar-section-title-{{ ai_gen_id }}">{{ event_title }}</div>
+            {% if event_description != blank %}
+              <div class="ai-scroll-calendar-section-description-{{ ai_gen_id }}">
+                {{ event_description }}
+              </div>
+            {% endif %}
+            {% if event_image %}
+              <div class="ai-scroll-calendar-section-image-{{ ai_gen_id }}">
+                <img
+                  src="{{ event_image | image_url: width: 1200 }}"
+                  alt="{{ event_title | escape }}"
+                  loading="lazy"
+                  width="{{ event_image.width }}"
+                  height="{{ event_image.height }}"
+                >
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</scroll-calendar-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ScrollCalendar{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.events = this.querySelectorAll('.ai-scroll-calendar-event-{{ ai_gen_id }}');
+        this.sections = this.querySelectorAll('.ai-scroll-calendar-section-{{ ai_gen_id }}');
+        this.activeIndex = 0;
+      }
+
+      connectedCallback() {
+        this.setupScrollObserver();
+        this.setupEventListeners();
+        this.updateActiveState(0);
+      }
+
+      setupScrollObserver() {
+        const options = {
+          root: null,
+          rootMargin: '-50% 0px -50% 0px',
+          threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const index = parseInt(entry.target.dataset.sectionIndex) - 1;
+              this.updateActiveState(index);
+            }
+          });
+        }, options);
+
+        this.sections.forEach((section) => {
+          observer.observe(section);
+        });
+      }
+
+      setupEventListeners() {
+        this.events.forEach((event, index) => {
+          event.addEventListener('click', () => {
+            const targetSection = this.sections[index];
+            if (targetSection) {
+              const offset = 100;
+              const elementPosition = targetSection.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
+      }
+
+      updateActiveState(index) {
+        if (this.activeIndex === index) return;
+        this.activeIndex = index;
+
+        this.events.forEach((event, i) => {
+          if (i === index) {
+            event.classList.add('active');
+          } else {
+            event.classList.remove('active');
+          }
+        });
+
+        this.sections.forEach((section, i) => {
+          if (i === index) {
+            section.classList.add('active');
+          } else {
+            section.classList.remove('active');
+          }
+        });
+      }
+    }
+
+    customElements.define('scroll-calendar-{{ ai_gen_id }}', ScrollCalendar{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Calendrier défilant",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Événement 1"
+    },
+    {
+      "type": "text",
+      "id": "event_1_date",
+      "label": "Date",
+      "default": "15 Mars 2026"
+    },
+    {
+      "type": "text",
+      "id": "event_1_title",
+      "label": "Titre",
+      "default": "Lancement de la collection printemps"
+    },
+    {
+      "type": "richtext",
+      "id": "event_1_description",
+      "label": "Description",
+      "default": "<p>Découvrez notre nouvelle collection printemps avec des pièces uniques et artisanales.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "event_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Événement 2"
+    },
+    {
+      "type": "text",
+      "id": "event_2_date",
+      "label": "Date",
+      "default": "22 Avril 2026"
+    },
+    {
+      "type": "text",
+      "id": "event_2_title",
+      "label": "Titre",
+      "default": "Atelier créatif"
+    },
+    {
+      "type": "richtext",
+      "id": "event_2_description",
+      "label": "Description",
+      "default": "<p>Participez à notre atelier créatif et apprenez les techniques artisanales.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "event_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Événement 3"
+    },
+    {
+      "type": "text",
+      "id": "event_3_date",
+      "label": "Date",
+      "default": "10 Mai 2026"
+    },
+    {
+      "type": "text",
+      "id": "event_3_title",
+      "label": "Titre",
+      "default": "Vente privée"
+    },
+    {
+      "type": "richtext",
+      "id": "event_3_description",
+      "label": "Description",
+      "default": "<p>Profitez de réductions exclusives sur une sélection de produits.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "event_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Événement 4"
+    },
+    {
+      "type": "text",
+      "id": "event_4_date",
+      "label": "Date",
+      "default": "18 Juin 2026"
+    },
+    {
+      "type": "text",
+      "id": "event_4_title",
+      "label": "Titre",
+      "default": "Collaboration artiste"
+    },
+    {
+      "type": "richtext",
+      "id": "event_4_description",
+      "label": "Description",
+      "default": "<p>Découvrez notre collaboration exclusive avec un artiste local.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "event_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Événement 5"
+    },
+    {
+      "type": "text",
+      "id": "event_5_date",
+      "label": "Date",
+      "default": "5 Juillet 2026"
+    },
+    {
+      "type": "text",
+      "id": "event_5_title",
+      "label": "Titre",
+      "default": "Soldes d'été"
+    },
+    {
+      "type": "richtext",
+      "id": "event_5_description",
+      "label": "Description",
+      "default": "<p>Les soldes d'été commencent avec des réductions jusqu'à 50%.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "event_5_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Mise en page"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Largeur bureau",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Rayon de bordure",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Couleurs de la timeline"
+    },
+    {
+      "type": "color",
+      "id": "inactive_bg_color",
+      "label": "Fond inactif",
+      "default": "#F7F5F0"
+    },
+    {
+      "type": "color",
+      "id": "inactive_border_color",
+      "label": "Bordure inactive",
+      "default": "#D4D0C8"
+    },
+    {
+      "type": "color",
+      "id": "active_bg_color",
+      "label": "Fond actif",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "active_border_color",
+      "label": "Bordure active",
+      "default": "#C4853A"
+    },
+    {
+      "type": "color",
+      "id": "date_color",
+      "label": "Date",
+      "default": "#6B6560"
+    },
+    {
+      "type": "color",
+      "id": "active_date_color",
+      "label": "Date active",
+      "default": "#C4853A"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Titre",
+      "default": "#1A1814"
+    },
+    {
+      "type": "color",
+      "id": "active_title_color",
+      "label": "Titre actif",
+      "default": "#1A1814"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs des sections"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Fond",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "section_date_color",
+      "label": "Date",
+      "default": "#C4853A"
+    },
+    {
+      "type": "color",
+      "id": "section_title_color",
+      "label": "Titre",
+      "default": "#1A1814"
+    },
+    {
+      "type": "color",
+      "id": "section_description_color",
+      "label": "Description",
+      "default": "#6B6560"
+    },
+    {
+      "type": "header",
+      "content": "Typographie timeline"
+    },
+    {
+      "type": "range",
+      "id": "date_font_size",
+      "label": "Taille date",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Taille titre",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Typographie sections"
+    },
+    {
+      "type": "range",
+      "id": "section_date_size",
+      "label": "Taille date",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "section_title_size",
+      "label": "Taille titre",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "section_description_size",
+      "label": "Taille description",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Calendrier défilant"
+    }
+  ]
+}
 {% endschema %}
