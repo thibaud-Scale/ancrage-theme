@@ -5,7 +5,7 @@
   assign show_payment_icons = section.settings.show_payment_icons
 -%}
 
-{/* Reassurance strip */}
+<!-- Reassurance strip -->
 {%- if section.settings.show_reassurance -%}
   <div class="reassurance-strip" aria-label="Nos engagements">
     <div class="reassurance-strip__container">
@@ -33,7 +33,7 @@
 <footer class="footer" role="contentinfo" aria-label="Pied de page" data-section-id="{{ section.id }}">
   <div class="footer__container">
     <div class="footer__grid">
-      {/* Column 1: Brand */}
+      <!-- Column 1: Brand -->
       <div class="footer__column footer__column--brand">
         <a href="{{ routes.root_url }}" class="footer__logo-link" aria-label="{{ shop.name }} - Accueil">
           {%- if section.settings.logo != blank -%}
@@ -54,7 +54,7 @@
           <p class="footer__tagline">{{ tagline }}</p>
         {%- endif -%}
 
-        {/* Social icons */}
+        <!-- Social icons -->
         <div class="footer__social" aria-label="Réseaux sociaux">
           {%- if section.settings.social_facebook != blank -%}
             <a href="{{ section.settings.social_facebook }}" class="footer__social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      {/* Dynamic columns from blocks */}
+      <!-- Dynamic columns from blocks -->
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'menu' -%}
@@ -112,7 +112,7 @@
         {%- endcase -%}
       {%- endfor -%}
 
-      {/* Newsletter column */}
+      <!-- Newsletter column -->
       {%- if section.settings.show_newsletter -%}
         <div class="footer__column footer__column--newsletter">
           {%- if newsletter_heading != blank -%}
@@ -161,7 +161,7 @@
     </div>
   </div>
 
-  {/* Bottom bar */}
+  <!-- Bottom bar -->
   <div class="footer__bottom">
     <div class="footer__bottom-container">
       <div class="footer__copyright">

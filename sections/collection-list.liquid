@@ -60,7 +60,7 @@
               <h3 class="collection-card__title">{{ coll.title | default: 'Nom de la collection' }}</h3>
               {%- if coll != blank -%}
                 <span class="collection-card__count">
-                  {{ coll.products_count }} {{ coll.products_count | pluralize: 'produit', 'produits' }}
+                  {{ coll.products_count }} produit{% if coll.products_count > 1 %}s{% endif %}
                 </span>
               {%- endif -%}
             </div>

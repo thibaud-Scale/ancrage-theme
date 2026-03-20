@@ -28,11 +28,12 @@
           {%- endif -%}
 
           {%- if block.settings.image != blank -%}
+            {%- assign logo_height_2x = section.settings.logo_height | times: 2 -%}
             <img
               src="{{ block.settings.image | image_url: height: section.settings.logo_height }}"
               srcset="
                 {{ block.settings.image | image_url: height: section.settings.logo_height }} 1x,
-                {{ block.settings.image | image_url: height: section.settings.logo_height | times: 2 }} 2x
+                {{ block.settings.image | image_url: height: logo_height_2x }} 2x
               "
               alt="{{ block.settings.alt | default: 'Logo partenaire' | escape }}"
               loading="lazy"

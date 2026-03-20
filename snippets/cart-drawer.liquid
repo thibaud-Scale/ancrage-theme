@@ -8,7 +8,7 @@
 {%- liquid
   assign item_count = cart.item_count
   assign cart_total = cart.total_price
-  assign free_shipping_threshold = settings.free_shipping_threshold | default: 5000
+  assign free_shipping_threshold = settings.cart_free_shipping_threshold | default: 50
   assign threshold_cents = free_shipping_threshold | times: 100
   assign remaining = threshold_cents | minus: cart_total
   assign shipping_progress = cart_total | times: 100 | divided_by: threshold_cents

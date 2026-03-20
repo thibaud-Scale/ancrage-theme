@@ -7,14 +7,14 @@
   assign main_menu = linklists[menu_handle]
 -%}
 
-<{% if is_sticky %}sticky-header{% else %}div{% endif %}
+<div
   id="shopify-section-header"
   class="header-wrapper{% if is_sticky %} header--sticky{% endif %}{% if is_transparent %} header--transparent{% endif %}"
   data-section-id="{{ section.id }}"
 >
   <header class="header" role="banner" aria-label="En-tête du site">
     <div class="header__container">
-      {/* Mobile hamburger */}
+      <!-- Mobile hamburger -->
       <button
         type="button"
         class="header__menu-toggle header__icon-btn mobile-only"
@@ -25,13 +25,14 @@
         {% render 'icon', name: 'menu' %}
       </button>
 
-      {/* Logo */}
+      <!-- Logo -->
       <div class="header__logo" style="max-width: {{ logo_width }}px;">
         <a href="{{ routes.root_url }}" class="header__logo-link" aria-label="{{ shop.name }} - Accueil">
           {%- if logo != blank -%}
+            {%- assign logo_width_2x = logo_width | times: 2 -%}
             <img
-              src="{{ logo | image_url: width: logo_width | times: 2 }}"
-              srcset="{{ logo | image_url: width: logo_width }} 1x, {{ logo | image_url: width: logo_width | times: 2 }} 2x"
+              src="{{ logo | image_url: width: logo_width }}"
+              srcset="{{ logo | image_url: width: logo_width }} 1x, {{ logo | image_url: width: logo_width_2x }} 2x"
               alt="{{ logo.alt | default: shop.name | escape }}"
               width="{{ logo_width }}"
               height="{{ logo_width | divided_by: logo.aspect_ratio }}"
@@ -44,7 +45,7 @@
         </a>
       </div>
 
-      {/* Desktop Navigation */}
+      <!-- Desktop Navigation -->
       <nav class="header__nav desktop-only" role="navigation" aria-label="Navigation principale">
         <ul class="header__nav-list" role="menubar">
           {%- for link in main_menu.links -%}
@@ -73,7 +74,7 @@
                 >
                   <div class="header__dropdown-inner">
                     {%- if link.links.first.links.size > 0 -%}
-                      {/* Mega menu layout */}
+                      <!-- Mega menu layout -->
                       <div class="header__mega-menu-grid">
                         {%- for child_link in link.links -%}
                           <div class="header__mega-menu-column">
@@ -99,7 +100,7 @@
                         {%- endfor -%}
                       </div>
                     {%- else -%}
-                      {/* Simple dropdown */}
+                      <!-- Simple dropdown -->
                       <ul class="header__dropdown-list" role="menu">
                         {%- for child_link in link.links -%}
                           <li role="none">
@@ -126,7 +127,7 @@
         </ul>
       </nav>
 
-      {/* Icon actions */}
+      <!-- Icon actions -->
       <div class="header__icons">
         <button
           type="button"
@@ -161,14 +162,14 @@
             {{ cart.item_count }}
           </span>
           <span class="visually-hidden" data-cart-count-text>
-            {{ cart.item_count }} {{ cart.item_count | pluralize: 'article', 'articles' }}
+            {{ cart.item_count }} article{% if cart.item_count > 1 %}s{% endif %}
           </span>
         </a>
       </div>
     </div>
   </header>
 
-  {/* Search Drawer */}
+  <!-- Search Drawer -->
   <div
     id="search-drawer"
     class="search-drawer"
@@ -210,7 +211,7 @@
     </div>
   </div>
 
-  {/* Mobile Menu Drawer */}
+  <!-- Mobile Menu Drawer -->
   <div
     id="mobile-menu-drawer"
     class="mobile-menu"
@@ -299,7 +300,7 @@
       </div>
     </div>
   </div>
-</{% if is_sticky %}sticky-header{% else %}div{% endif %}>
+</div>
 
 <style>
   :root {
