@@ -30,10 +30,15 @@
         "header_bg_color": "#ffffff",
         "header_text_color": "#2c2c2c"
       }
+    },
+    "1774019339a8225db8": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
     "announcement-bar",
-    "header"
+    "header",
+    "1774019339a8225db8"
   ]
 }
